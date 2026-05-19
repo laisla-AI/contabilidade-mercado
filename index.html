@@ -488,13 +488,23 @@ function filtrarPeriodo() {
 window.exportExcel = function() {
   const dados = filtrarPeriodo();
   if (!dados.length) { alert('Nenhum registro no período.'); return; }
-  const rows = [['Arquivo','Data','Fornecedor','Categoria','Valor (R$)','Pagamento','Observação','Comprovante']];
+  const rows = [['Arquivo','Data','Fornecedor','Categoria','Valor (R$)','Pagamento','Observação','Comprovante','Link da Imagem']];
   dados.forEach(r => {
     const dt = new Date(r.data+'T12:00:00').toLocaleDateString('pt-BR');
-    rows.push([nomeArquivo(r), dt, r.forn, r.cat, r.valor, r.pgto, r.obs, r.foto?'Sim':'Não']);
+    rows.push([nomeArquivo(r), dt, r.forn, r.cat, r.valor, r.pgto, r.obs, r.foto?'Sim':'Não', r.foto||'']);
   });
   const ws = XLSX.utils.aoa_to_sheet(rows);
-  ws['!cols'] = [{wch:32},{wch:12},{wch:28},{wch:20},{wch:12},{wch:12},{wch:25},{wch:12}];
+  // Adicionar hiperlinks na coluna I
+  dados.forEach((r, i) => {
+    if (r.foto) {
+      const cell = XLSX.utils.encode_cell({r: i+1, c: 8});
+      if (!ws[cell]) ws[cell] = {};
+      ws[cell].l = { Target: r.foto };
+      ws[cell].v = 'Abrir imagem';
+      ws[cell].t = 's';
+    }
+  });
+  ws['!cols'] = [{wch:32},{wch:12},{wch:28},{wch:20},{wch:12},{wch:12},{wch:25},{wch:12},{wch:40}];
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, 'Compras sem nota');
   const de = document.getElementById('p-de').value;
@@ -531,6 +541,8 @@ window.exportPDF = function() {
   doc.save(`Relatorio_Compras_${de}_${ate}.pdf`);
 };
 
+window.exportPDF = function() { alert('Use o botão ZIP para exportar. O PDF foi substituído pelo Excel + imagens para melhor qualidade.'); };
+
 window.gerarZIP = async function() {
   if (registros.length === 0 && window._getDocs) {
     const pl2 = document.getElementById('progLbl');
@@ -564,27 +576,27 @@ window.gerarZIP = async function() {
     `${base}/03 - FUNCIONÁRIOS (RH)/Folhas de Ponto`,
     `${base}/03 - FUNCIONÁRIOS (RH)/Holerites Escaneados`,
   ].forEach(p => zip.folder(p));
-  const {jsPDF} = window.jspdf;
-  pl.textContent = 'Gerando PDFs individuais...'; pf.style.width = '10%';
+  pl.textContent = 'Baixando imagens...'; pf.style.width = '10%';
   for (let i = 0; i < dados.length; i++) {
     const r = dados[i];
-    const doc2 = new jsPDF({unit:'mm',format:'a4'});
-    const dt = new Date(r.data+'T12:00:00').toLocaleDateString('pt-BR');
-    const vf = 'R$ '+r.valor.toLocaleString('pt-BR',{minimumFractionDigits:2});
-    doc2.setFontSize(14); doc2.setFont(undefined,'bold');
-    doc2.text('Comprovante de Compra', 14, 18);
-    doc2.setFontSize(10); doc2.setFont(undefined,'normal');
-    doc2.text(`Arquivo: ${nomeArquivo(r)}`, 14, 28);
-    doc2.text(`Data: ${dt}`, 14, 35);
-    doc2.text(`Fornecedor: ${r.forn}`, 14, 42);
-    doc2.text(`Valor: ${vf}`, 14, 49);
-    doc2.text(`Pagamento: ${r.pgto}`, 14, 56);
-    if (r.cat) doc2.text(`Categoria: ${r.cat}`, 14, 63);
-    if (r.obs) doc2.text(`Observação: ${r.obs}`, 14, 70);
-    if (r.foto) { try { doc2.text('Comprovante:', 14, 82); doc2.addImage(r.foto,'JPEG',14,86,100,75,undefined,'FAST'); } catch(e){} }
-    zip.file(`${compPath}/${nomeArquivo(r)}.pdf`, doc2.output('arraybuffer'));
+    if (r.foto) {
+      try {
+        // Se for URL do Cloudinary, baixar a imagem
+        if (r.foto.startsWith('http')) {
+          const resp = await fetch(r.foto);
+          const blob = await resp.blob();
+          const ext = blob.type.includes('png') ? 'png' : 'jpg';
+          zip.file(`${compPath}/${nomeArquivo(r)}.${ext}`, blob);
+        } else {
+          // Base64 antigo - converter para blob
+          const res2 = await fetch(r.foto);
+          const blob2 = await res2.blob();
+          zip.file(`${compPath}/${nomeArquivo(r)}.jpg`, blob2);
+        }
+      } catch(e) { console.error('Erro ao baixar imagem:', e); }
+    }
     pf.style.width = Math.round(10+(i+1)/dados.length*55)+'%';
-    await new Promise(res => setTimeout(res, 10));
+    await new Promise(res => setTimeout(res, 50));
   }
   pl.textContent = 'Gerando Excel...'; pf.style.width = '68%';
   await new Promise(res => setTimeout(res, 50));
