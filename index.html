@@ -545,7 +545,8 @@ window.gerarZIP = async function() {
   ws['!cols'] = [{wch:32},{wch:12},{wch:28},{wch:20},{wch:12},{wch:12},{wch:25},{wch:12}];
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, 'Compras sem nota');
-  zip.file(`${compPath}/Resumo_Compras_${de}_${ate}.xlsx`, XLSX.write(wb,{bookType:'xlsx',type:'arraybuffer'}));
+  const xlsData = XLSX.write(wb,{bookType:'xlsx',type:'array'});
+  zip.file(`${compPath}/Resumo_Compras_${de}_${ate}.xlsx`, xlsData);
   pl.textContent = 'Compactando ZIP...'; pf.style.width = '80%';
   await new Promise(res => setTimeout(res, 50));
   const blob = await zip.generateAsync({type:'blob',compression:'DEFLATE',compressionOptions:{level:6}}, meta => {
