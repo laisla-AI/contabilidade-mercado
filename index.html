@@ -803,11 +803,20 @@ async function lerComIA() {
     
     statusTxt.textContent = 'Preenchendo campos...';
 
-    // Extrair JSON da resposta
-    const jsonMatch = texto.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) throw new Error('IA não retornou dados válidos');
-    
-    const resultado = JSON.parse(jsonMatch[0]);
+    // Extrair JSON da resposta — tolerante a texto extra
+    let resultado = null;
+    const jsonMatch = texto.match(/\{[\s\S]*?\}/);
+    if (jsonMatch) {
+      try { resultado = JSON.parse(jsonMatch[0]); } catch(e) {}
+    }
+    // Tentar JSON mais amplo se o primeiro falhar
+    if (!resultado) {
+      const jsonMatch2 = texto.match(/\{[\s\S]*\}/);
+      if (jsonMatch2) {
+        try { resultado = JSON.parse(jsonMatch2[0]); } catch(e) {}
+      }
+    }
+    if (!resultado) throw new Error('IA não retornou dados válidos. Tente novamente.');
 
     // Preencher campos
     if (resultado.data) document.getElementById('i-data').value = resultado.data;
