@@ -775,6 +775,8 @@ window.gerarZIP = async function() {
   setTimeout(()=>{pw.style.display='none';pf.style.width='0%';},3000);
 };
 
+const WORKER_URL = 'https://ocr-contabilidade.laislagomesds29.workers.dev';
+
 async function lerComIA() {
   const img = getImg();
   if (!img) { alert('Adicione uma foto primeiro.'); return; }
@@ -785,47 +787,19 @@ async function lerComIA() {
 
   btn.disabled = true;
   status.style.display = 'flex';
-  statusTxt.textContent = 'Analisando comprovante...';
+  statusTxt.textContent = 'Analisando comprovante com IA...';
 
   try {
     const base64 = img.split(',')[1];
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    const response = await fetch(WORKER_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 500,
-        messages: [{
-          role: 'user',
-          content: [
-            {
-              type: 'image',
-              source: { type: 'base64', media_type: 'image/jpeg', data: base64 }
-            },
-            {
-              type: 'text',
-              text: `Analise este comprovante/recibo e extraia APENAS as informações solicitadas. Responda SOMENTE em JSON válido, sem texto adicional, sem markdown, sem explicações.
-
-Formato exato:
-{"data":"AAAA-MM-DD","fornecedor":"NOME EM MAIÚSCULO","valor":"000.00","categoria":"uma das opções abaixo"}
-
-Categorias disponíveis (escolha a mais adequada):
-Bebidas, Frios e laticínios, Hortifruti, Padaria / pão, Cigarro, Limpeza, Mercadoria geral, Doces, Manutenção, Acessórios, Despesa operacional, Outro
-
-Regras:
-- data: formato AAAA-MM-DD (se não encontrar, use hoje: ${new Date().toISOString().slice(0,10)})
-- fornecedor: nome da empresa/pessoa em MAIÚSCULO
-- valor: total pago com ponto decimal (ex: 374.00)
-- categoria: escolha baseada nos produtos/serviços do comprovante
-- Se não conseguir identificar algum campo, use string vazia ""`
-            }
-          ]
-        }]
-      })
+      body: JSON.stringify({ base64, mimeType: 'image/jpeg' })
     });
 
     const data = await response.json();
-    const texto = data.content?.[0]?.text || '';
+    if (data.error) throw new Error(data.error);
+    const texto = data.text || '';
     
     statusTxt.textContent = 'Preenchendo campos...';
 
