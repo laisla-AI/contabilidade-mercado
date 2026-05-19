@@ -228,6 +228,18 @@ document.getElementById('statusDot').title = 'Conectado ao Firebase';
 const MESES = ['JANEIRO','FEVEREIRO','MARÇO','ABRIL','MAIO','JUNHO','JULHO','AGOSTO','SETEMBRO','OUTUBRO','NOVEMBRO','DEZEMBRO'];
 let registros = [];
 let imgOrig = null;
+
+// Carregar registros automaticamente ao iniciar
+window.addEventListener('load', function() {
+  setTimeout(function() {
+    if (window._getDocs && window._col) {
+      carregarRegistros();
+    } else {
+      // Firebase ainda carregando, tenta de novo
+      setTimeout(function() { carregarRegistros(); }, 1500);
+    }
+  }, 800);
+});
 let filtroAtivo = 'original';
 let contador = 1;
 
@@ -468,8 +480,16 @@ window.exportPDF = function() {
 };
 
 window.gerarZIP = async function() {
+  if (registros.length === 0 && window._getDocs) {
+    const pl2 = document.getElementById('progLbl');
+    const pw2 = document.getElementById('progWrap');
+    pw2.style.display = 'block';
+    pl2.textContent = 'Buscando registros...';
+    await carregarRegistros();
+    pw2.style.display = 'none';
+  }
   const dados = filtrarPeriodo();
-  if (!dados.length) { alert('Nenhum registro no período.'); return; }
+  if (!dados.length) { alert('Nenhum registro no período selecionado. Verifique as datas.'); return; }
   const pw = document.getElementById('progWrap');
   const pf = document.getElementById('progFill');
   const pl = document.getElementById('progLbl');
