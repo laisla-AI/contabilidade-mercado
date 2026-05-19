@@ -272,7 +272,7 @@ function filtro(tipo) {
   if (idx >= 0) document.querySelectorAll('.sbtn')[idx].classList.add('active');
   const cvs = document.getElementById('cvs');
   const ctx = cvs.getContext('2d');
-  const maxW = 800;
+  const maxW = 600;
   const sc = Math.min(1, maxW / imgOrig.width);
   cvs.width = imgOrig.width * sc; cvs.height = imgOrig.height * sc;
   ctx.drawImage(imgOrig, 0, 0, cvs.width, cvs.height);
@@ -294,9 +294,9 @@ function getImg() {
     const t = document.createElement('canvas');
     t.width = imgOrig.width; t.height = imgOrig.height;
     t.getContext('2d').drawImage(imgOrig, 0, 0);
-    return t.toDataURL('image/jpeg', 0.75);
+    return t.toDataURL('image/jpeg', 0.3);
   }
-  return document.getElementById('cvs').toDataURL('image/jpeg', 0.75);
+  return document.getElementById('cvs').toDataURL('image/jpeg', 0.3);
 }
 
 function nomeArquivo(r) {
@@ -509,7 +509,7 @@ window.gerarZIP = async function() {
     doc2.text(`Pagamento: ${r.pgto}`, 14, 56);
     if (r.cat) doc2.text(`Categoria: ${r.cat}`, 14, 63);
     if (r.obs) doc2.text(`Observação: ${r.obs}`, 14, 70);
-    if (r.foto) { try { doc2.text('Comprovante:', 14, 82); doc2.addImage(r.foto,'JPEG',14,86,100,75); } catch(e){} }
+    if (r.foto) { try { doc2.text('Comprovante:', 14, 82); doc2.addImage(r.foto,'JPEG',14,86,100,75,undefined,'FAST'); } catch(e){} }
     zip.file(`${compPath}/${nomeArquivo(r)}.pdf`, doc2.output('arraybuffer'));
     pf.style.width = Math.round(10+(i+1)/dados.length*55)+'%';
     await new Promise(res => setTimeout(res, 10));
