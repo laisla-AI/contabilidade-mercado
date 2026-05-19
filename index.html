@@ -481,13 +481,19 @@ window.addEventListener('load', function() {
 });
 
 function trocarTab(id) {
-  document.querySelectorAll('.tab').forEach((t,i) => {
-    t.classList.toggle('active', ['registro','lista','exportar'][i] === id);
-  });
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  const tabAtiva = document.querySelector(`.tab[onclick="trocarTab('${id}')"]`);
+  if (tabAtiva) tabAtiva.classList.add('active');
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.getElementById('panel-'+id).classList.add('active');
+  const panel = document.getElementById('panel-'+id);
+  if (panel) panel.classList.add('active');
+  
   if (id === 'lista' || id === 'exportar' || id === 'banco' || id === 'dashboard' || id === 'fornecedores') {
     carregarRegistros().then(function() {
+      if (id === 'dashboard') renderDashboard();
+      if (id === 'fornecedores') renderFornecedores();
+    }).catch(function(e) {
+      console.error('Erro ao carregar:', e);
       if (id === 'dashboard') renderDashboard();
       if (id === 'fornecedores') renderFornecedores();
     });
@@ -694,15 +700,19 @@ async function carregarRegistros() {
   const ll = document.getElementById('loadingLista');
   if (ll) ll.style.display = 'flex';
   try {
-    if (!window._getDocs) {
-      await new Promise(res => setTimeout(res, 1000));
+    // Aguardar Firebase até 3 segundos
+    let tentativas = 0;
+    while (!window._getDocs && tentativas < 6) {
+      await new Promise(res => setTimeout(res, 500));
+      tentativas++;
     }
-    if (!window._getDocs) return;
+    if (!window._getDocs) { console.log('Firebase não disponível'); return; }
     const q = window._query(window._col, window._orderBy('criadoEm','desc'));
     const snap = await window._getDocs(q);
     registros = snap.docs.map(d => ({id:d.id,...d.data()}));
-    renderLista();
-  } catch(e) { console.error(e); }
+    const listaEl = document.getElementById('lista');
+    if (listaEl) renderLista();
+  } catch(e) { console.error('Erro carregarRegistros:', e); }
   if (ll) ll.style.display = 'none';
 }
 
