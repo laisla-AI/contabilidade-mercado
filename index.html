@@ -302,21 +302,18 @@ function filtro(tipo) {
 
 function getImg() {
   if (!imgOrig) return null;
-  if (filtroAtivo === 'original') {
-    const t = document.createElement('canvas');
-    t.width = imgOrig.naturalWidth || imgOrig.width;
-    t.height = imgOrig.naturalHeight || imgOrig.height;
-    t.getContext('2d').drawImage(imgOrig, 0, 0);
-    return t.toDataURL('image/jpeg', 0.92);
-  }
-  // Para filtros, usar canvas em tamanho real
-  const cvsReal = document.createElement('canvas');
-  const ctxReal = cvsReal.getContext('2d');
-  cvsReal.width = imgOrig.naturalWidth || imgOrig.width;
-  cvsReal.height = imgOrig.naturalHeight || imgOrig.height;
-  ctxReal.drawImage(imgOrig, 0, 0, cvsReal.width, cvsReal.height);
-  if (filtroAtivo === 'scanner' || filtroAtivo === 'contraste') {
-    const id2 = ctxReal.getImageData(0, 0, cvsReal.width, cvsReal.height);
+  const t = document.createElement('canvas');
+  // Limitar a 1600px para não travar celulares com pouca memória
+  const maxW = 1600;
+  const w = imgOrig.naturalWidth || imgOrig.width;
+  const h = imgOrig.naturalHeight || imgOrig.height;
+  const sc = Math.min(1, maxW / w);
+  t.width = Math.round(w * sc);
+  t.height = Math.round(h * sc);
+  const ctx = t.getContext('2d');
+  ctx.drawImage(imgOrig, 0, 0, t.width, t.height);
+  if (filtroAtivo !== 'original') {
+    const id2 = ctx.getImageData(0, 0, t.width, t.height);
     const d2 = id2.data;
     for (let i = 0; i < d2.length; i += 4) {
       let g = 0.299*d2[i] + 0.587*d2[i+1] + 0.114*d2[i+2];
@@ -324,9 +321,9 @@ function getImg() {
       else { g = Math.min(255,Math.max(0,(g-128)*1.8+128)); }
       d2[i] = d2[i+1] = d2[i+2] = g;
     }
-    ctxReal.putImageData(id2, 0, 0);
+    ctx.putImageData(id2, 0, 0);
   }
-  return cvsReal.toDataURL('image/jpeg', 0.92);
+  return t.toDataURL('image/jpeg', 0.88);
 }
 
 function nomeArquivo(r) {
@@ -393,9 +390,13 @@ async function salvar() {
       criadoEm: new Date().toISOString()
     };
     await window._addDoc(window._col, reg);
+    // Limpar alertas anteriores antes de mostrar sucesso
+    document.getElementById('ok').style.display = 'none';
+    document.getElementById('err').style.display = 'none';
     mostrarAlerta('ok');
     limpar();
   } catch(e) {
+    document.getElementById('ok').style.display = 'none';
     document.getElementById('errMsg').textContent = 'Erro: ' + e.message;
     mostrarAlerta('err');
   }
