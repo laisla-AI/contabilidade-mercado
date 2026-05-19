@@ -353,24 +353,32 @@ async function salvar() {
   try {
     // Aguardar Firebase conectar se ainda não estiver pronto
     let tentativas = 0;
-    while (!window._addDoc && tentativas < 10) {
-      await new Promise(res => setTimeout(res, 500));
+    while (!window._addDoc && tentativas < 8) {
+      await new Promise(res => setTimeout(res, 300));
       tentativas++;
     }
     if (!window._addDoc) throw new Error('Firebase não conectou. Verifique sua internet e recarregue a página.');
     
-    // Comprimir foto se muito grande para evitar erro no Firebase
+    // Comprimir foto para caber no Firestore (limite 1MB por documento)
     let foto = getImg();
-    if (foto && foto.length > 900000) {
-      const tmpCvs = document.createElement('canvas');
+    if (foto) {
       const tmpImg = new Image();
       await new Promise(res => { tmpImg.onload = res; tmpImg.src = foto; });
-      const maxW = 1200;
-      const sc = Math.min(1, maxW / tmpImg.width);
-      tmpCvs.width = tmpImg.width * sc;
-      tmpCvs.height = tmpImg.height * sc;
-      tmpCvs.getContext('2d').drawImage(tmpImg, 0, 0, tmpCvs.width, tmpCvs.height);
-      foto = tmpCvs.toDataURL('image/jpeg', 0.7);
+      const tmpCvs = document.createElement('canvas');
+      // Reduzir até caber em ~700KB
+      let qualidade = 0.7;
+      let maxW = 900;
+      let tentFoto = 0;
+      do {
+        const sc = Math.min(1, maxW / tmpImg.width);
+        tmpCvs.width = tmpImg.width * sc;
+        tmpCvs.height = tmpImg.height * sc;
+        tmpCvs.getContext('2d').drawImage(tmpImg, 0, 0, tmpCvs.width, tmpCvs.height);
+        foto = tmpCvs.toDataURL('image/jpeg', qualidade);
+        qualidade -= 0.1;
+        maxW -= 100;
+        tentFoto++;
+      } while (foto.length > 700000 && tentFoto < 5);
     }
 
     const reg = {
