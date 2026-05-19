@@ -100,6 +100,27 @@ textarea{resize:vertical;min-height:52px}
 .pix-badge{display:inline-block;font-size:10px;background:#ebf8ff;color:#2b6cb0;border:1px solid #bee3f8;border-radius:99px;padding:1px 7px;margin-left:5px;vertical-align:middle}
 .divider{height:1px;background:#f0f0ee;margin:12px 0}
 .section-lbl{font-size:11px;color:#888;font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.ofx-item{background:#fff;border:1px solid #e5e5e3;border-radius:8px;padding:10px 12px;margin-bottom:6px;display:flex;align-items:center;gap:10px}
+.ofx-entrada{border-left:3px solid #48bb78}
+.ofx-saida{border-left:3px solid #fc8181}
+.ofx-val-pos{font-size:14px;font-weight:500;color:#276749;white-space:nowrap}
+.ofx-val-neg{font-size:14px;font-weight:500;color:#c53030;white-space:nowrap}
+.ofx-desc{font-size:13px;font-weight:500;color:#1a1a1a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ofx-meta{font-size:11px;color:#888;margin-top:1px}
+.ofx-match{font-size:10px;background:#f0faf4;color:#276749;border:1px solid #9ae6b4;border-radius:99px;padding:1px 7px;margin-left:4px}
+.ofx-semcomp{font-size:10px;background:#fff5f5;color:#c53030;border:1px solid #feb2b2;border-radius:99px;padding:1px 7px;margin-left:4px}
+.cat-bar{height:8px;border-radius:99px;margin-top:3px;margin-bottom:8px}
+.cat-row{display:flex;align-items:center;justify-content:space-between;font-size:13px;margin-bottom:2px}
+.cat-label{color:#555;flex:1}
+.cat-valor{font-weight:500;color:#1a1a1a;white-space:nowrap;margin-left:8px}
+.cat-pct{font-size:11px;color:#888;margin-left:6px;white-space:nowrap}
+.forn-item{background:#fff;border:1px solid #e5e5e3;border-radius:8px;padding:12px 14px;margin-bottom:8px}
+.forn-nome{font-size:14px;font-weight:500;color:#1a1a1a}
+.forn-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+.forn-stat{background:#f9f9f7;border-radius:6px;padding:6px 8px}
+.forn-stat-lbl{font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.04em}
+.forn-stat-val{font-size:13px;font-weight:500;color:#1a1a1a;margin-top:1px}
+.alerta-item{background:#fff8e1;border:1px solid #f6e05e;border-radius:8px;padding:10px 12px;margin-bottom:8px;font-size:13px;display:flex;align-items:center;gap:8px}
 </style>
 </head>
 <body>
@@ -114,6 +135,9 @@ textarea{resize:vertical;min-height:52px}
 <div class="tabs">
   <button class="tab active" onclick="trocarTab('registro')"><i class="ti ti-plus"></i>Novo</button>
   <button class="tab" onclick="trocarTab('lista')"><i class="ti ti-list"></i>Registros</button>
+  <button class="tab" onclick="trocarTab('dashboard')"><i class="ti ti-chart-pie"></i>Dashboard</button>
+  <button class="tab" onclick="trocarTab('banco')"><i class="ti ti-building-bank"></i>Banco</button>
+  <button class="tab" onclick="trocarTab('fornecedores')"><i class="ti ti-truck"></i>Fornecedores</button>
   <button class="tab" onclick="trocarTab('exportar')"><i class="ti ti-download"></i>Exportar</button>
 </div>
 
@@ -226,6 +250,16 @@ textarea{resize:vertical;min-height:52px}
   <div class="alert" id="loadingLista" style="background:#f0f4ff;color:#2b4acb;display:none;align-items:center;gap:8px">
     <div class="spinner" style="border-color:#2b4acb;border-top-color:transparent"></div> Carregando...
   </div>
+
+  <!-- Filtro de mês -->
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;align-items:center">
+    <select id="filtroMes" onchange="renderLista()" style="flex:1;font-size:13px;border:1px solid #e5e5e3;border-radius:8px;padding:8px 12px;background:#fff;font-family:inherit">
+      <option value="">Todos os meses</option>
+    </select>
+    <select id="filtroAno" onchange="atualizarFiltroMes()" style="width:90px;font-size:13px;border:1px solid #e5e5e3;border-radius:8px;padding:8px 12px;background:#fff;font-family:inherit">
+    </select>
+  </div>
+
   <div id="resumoWrap" style="display:none">
     <div class="resumo">
       <div class="rcard"><div class="rlbl">Registros</div><div class="rval" id="r-qtd">0</div></div>
@@ -234,9 +268,87 @@ textarea{resize:vertical;min-height:52px}
     </div>
   </div>
   <div class="sec-hd" id="secHd" style="display:none">
-    Todos os registros <span class="badge" id="badgeN">0</span>
+    Registros do período <span class="badge" id="badgeN">0</span>
   </div>
   <div id="lista"><div class="empty"><i class="ti ti-clipboard-list"></i>Nenhum registro ainda.</div></div>
+</div>
+
+<!-- PAINEL DASHBOARD -->
+<div class="panel" id="panel-dashboard">
+  <div class="card" id="dash-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <div style="font-size:14px;font-weight:500"><i class="ti ti-chart-pie" style="vertical-align:-2px;margin-right:5px"></i>Dashboard financeiro</div>
+      <div style="display:flex;gap:6px">
+        <select id="dash-ano" onchange="renderDashboard()" style="font-size:12px;border:1px solid #e5e5e3;border-radius:8px;padding:6px 10px;font-family:inherit"></select>
+        <select id="dash-mes" onchange="renderDashboard()" style="font-size:12px;border:1px solid #e5e5e3;border-radius:8px;padding:6px 10px;font-family:inherit">
+          <option value="">Todos</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Comparativo mês a mês -->
+    <div id="dash-comparativo" style="background:#f9f9f7;border-radius:8px;padding:10px 12px;margin-bottom:12px;font-size:13px;display:none"></div>
+
+    <!-- Resumo -->
+    <div class="resumo" id="dash-resumo" style="display:none">
+      <div class="rcard"><div class="rlbl">Registros</div><div class="rval" id="dash-qtd">0</div></div>
+      <div class="rcard"><div class="rlbl">Total gasto</div><div class="rval" id="dash-total">R$0</div></div>
+      <div class="rcard"><div class="rlbl">Média por registro</div><div class="rval" id="dash-media">R$0</div></div>
+    </div>
+
+    <!-- Gráfico por categoria -->
+    <div id="dash-categorias" style="margin-top:12px"></div>
+  </div>
+</div>
+
+<!-- PAINEL FORNECEDORES -->
+<div class="panel" id="panel-fornecedores">
+  <div class="card">
+    <div style="font-size:14px;font-weight:500;margin-bottom:4px"><i class="ti ti-truck" style="vertical-align:-2px;margin-right:5px"></i>Fornecedores</div>
+    <div style="font-size:12px;color:#888;margin-bottom:12px">Histórico, ticket médio e alertas de nota não chegou.</div>
+
+    <!-- Alertas -->
+    <div id="dash-alertas" style="margin-bottom:12px"></div>
+
+    <!-- Lista de fornecedores -->
+    <div id="forn-lista"><div class="empty"><i class="ti ti-truck"></i>Carregando fornecedores...</div></div>
+  </div>
+
+  <!-- Config de frequência -->
+  <div class="card" id="forn-config" style="display:none">
+    <div style="font-size:13px;font-weight:500;margin-bottom:10px">⚙️ Configurar alertas de frequência</div>
+    <div id="forn-config-lista"></div>
+    <button class="btn-p" onclick="salvarFrequencias()" style="margin-top:10px"><i class="ti ti-device-floppy"></i>Salvar configurações</button>
+  </div>
+</div>
+
+<!-- PAINEL BANCO -->
+<div class="panel" id="panel-banco">
+  <div class="card">
+    <div style="font-size:14px;font-weight:500;margin-bottom:6px"><i class="ti ti-file-import" style="vertical-align:-2px;margin-right:5px"></i>Importar extrato OFX</div>
+    <div style="font-size:12px;color:#888;margin-bottom:12px">Baixe o extrato da Stone em formato OFX e importe aqui para ver todas as transações do período.</div>
+    <div class="upload-zone" id="ofxZone" style="margin-bottom:12px">
+      <input type="file" id="i-ofx" accept=".ofx,.OFX" onchange="importarOFX(this)">
+      <div class="ulbl"><i class="ti ti-file-spreadsheet" style="color:#2b6cb0"></i>Clique ou arraste o arquivo .OFX da Stone</div>
+    </div>
+    <div id="ofxResumo" style="display:none">
+      <div class="resumo" style="margin-bottom:12px">
+        <div class="rcard"><div class="rlbl">Transações</div><div class="rval" id="ofx-total">0</div></div>
+        <div class="rcard"><div class="rlbl">Entradas</div><div class="rval" id="ofx-entrada" style="color:#276749">R$0</div></div>
+        <div class="rcard"><div class="rlbl">Saídas</div><div class="rval" id="ofx-saida" style="color:#c53030">R$0</div></div>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+        <select id="ofxFiltro" onchange="renderOFX()" style="flex:1;font-size:13px;border:1px solid #e5e5e3;border-radius:8px;padding:8px 12px;font-family:inherit">
+          <option value="">Todas as transações</option>
+          <option value="entrada">Só entradas</option>
+          <option value="saida">Só saídas</option>
+          <option value="sempix">Saídas sem comprovante</option>
+        </select>
+        <button class="ebtn destaque" onclick="exportarOFXExcel()" style="font-size:13px"><i class="ti ti-file-spreadsheet"></i>Exportar Excel</button>
+      </div>
+      <div id="ofxLista"></div>
+    </div>
+  </div>
 </div>
 
 <!-- PAINEL EXPORTAR -->
@@ -253,9 +365,15 @@ textarea{resize:vertical;min-height:52px}
       <div style="padding-left:14px"><i class="ti ti-folder" style="color:#E9A23B;vertical-align:-2px;margin-right:4px"></i>02 - BANCO / Comprovantes de Pagamento → Imagens + Excel</div>
       <div style="padding-left:14px"><i class="ti ti-folder" style="color:#E9A23B;vertical-align:-2px;margin-right:4px"></i>03 - FUNCIONÁRIOS → Imagens + Excel</div>
     </div>
+    <!-- Email do contador -->
+    <div style="margin-bottom:12px">
+      <label style="font-size:11px;color:#666;font-weight:500;text-transform:uppercase;letter-spacing:.04em">Email do contador</label>
+      <input type="email" id="emailContador" placeholder="contador@escritorio.com.br" style="margin-top:4px;font-size:14px;border:1px solid #e5e5e3;border-radius:8px;padding:9px 12px;width:100%;font-family:inherit">
+    </div>
     <div class="exp-row">
       <button class="ebtn" onclick="exportExcel()"><i class="ti ti-file-spreadsheet"></i>Excel</button>
-      <button class="ebtn destaque" onclick="gerarZIP()"><i class="ti ti-file-zip"></i>ZIP completo</button>
+      <button class="ebtn" onclick="gerarZIP()"><i class="ti ti-file-zip"></i>ZIP completo</button>
+      <button class="ebtn destaque" onclick="enviarParaContador()"><i class="ti ti-mail"></i>Enviar ao contador</button>
     </div>
     <div class="progress-wrap" id="progWrap">
       <div class="progress-lbl" id="progLbl">Gerando...</div>
@@ -368,7 +486,9 @@ function trocarTab(id) {
   });
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.getElementById('panel-'+id).classList.add('active');
-  if (id === 'lista' || id === 'exportar') carregarRegistros();
+  if (id === 'lista' || id === 'exportar' || id === 'banco' || id === 'dashboard' || id === 'fornecedores') carregarRegistros();
+  if (id === 'dashboard') setTimeout(renderDashboard, 500);
+  if (id === 'fornecedores') setTimeout(renderFornecedores, 500);
 }
 
 // Upload comprovante recebimento
@@ -580,36 +700,103 @@ async function carregarRegistros() {
   if (ll) ll.style.display = 'none';
 }
 
+function atualizarFiltroMes() {
+  const ano = document.getElementById('filtroAno').value;
+  const sel = document.getElementById('filtroMes');
+  const mesAtual = sel.value;
+  sel.innerHTML = '<option value="">Todos os meses</option>';
+  const mesesDisp = [...new Set(registros
+    .filter(r => r.data && r.data.startsWith(ano))
+    .map(r => r.data.slice(5,7))
+  )].sort();
+  mesesDisp.forEach(m => {
+    const nomes = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+    const opt = document.createElement('option');
+    opt.value = m;
+    opt.textContent = nomes[parseInt(m)-1];
+    if (m === mesAtual) opt.selected = true;
+    sel.appendChild(opt);
+  });
+  renderLista();
+}
+
+function inicializarFiltros() {
+  const anos = [...new Set(registros.filter(r=>r.data).map(r=>r.data.slice(0,4)))].sort().reverse();
+  const selAno = document.getElementById('filtroAno');
+  selAno.innerHTML = '';
+  const anoAtual = new Date().getFullYear().toString();
+  anos.forEach(a => {
+    const opt = document.createElement('option');
+    opt.value = a; opt.textContent = a;
+    if (a === anoAtual) opt.selected = true;
+    selAno.appendChild(opt);
+  });
+  // Selecionar mês atual por padrão
+  const mesAtual = String(new Date().getMonth()+1).padStart(2,'0');
+  const sel = document.getElementById('filtroMes');
+  atualizarFiltroMes();
+  // Tentar selecionar mês atual
+  for (let opt of sel.options) {
+    if (opt.value === mesAtual) { opt.selected = true; break; }
+  }
+}
+
+function registrosFiltrados() {
+  const ano = document.getElementById('filtroAno')?.value || '';
+  const mes = document.getElementById('filtroMes')?.value || '';
+  return registros.filter(r => {
+    if (!r.data) return false;
+    if (ano && !r.data.startsWith(ano)) return false;
+    if (mes && r.data.slice(5,7) !== mes) return false;
+    return true;
+  });
+}
+
 function renderLista() {
   const lista = document.getElementById('lista');
   const rw = document.getElementById('resumoWrap');
   const sh = document.getElementById('secHd');
+  
   if (!registros.length) {
     lista.innerHTML = '<div class="empty"><i class="ti ti-clipboard-list"></i>Nenhum registro ainda.</div>';
     if(rw)rw.style.display='none'; if(sh)sh.style.display='none'; return;
   }
+
+  inicializarFiltros();
+  const filtrados = registrosFiltrados();
+
+  if(!filtrados.length) {
+    lista.innerHTML = '<div class="empty"><i class="ti ti-calendar-off"></i>Nenhum registro neste período.</div>';
+    if(rw)rw.style.display='none'; if(sh)sh.style.display='none'; return;
+  }
+
   if(rw)rw.style.display='block'; if(sh)sh.style.display='flex';
-  const total = registros.reduce((s,r) => s+(r.valor||0), 0);
-  const sem = registros.filter(r => !r.foto).length;
-  document.getElementById('r-qtd').textContent = registros.length;
+  const total = filtrados.reduce((s,r) => s+(r.valor||0), 0);
+  // Sem comprovante: só conta se não tem foto E não é via email (email tem PDF no Drive)
+  const sem = filtrados.filter(r => !r.foto && r.origem !== 'email').length;
+  document.getElementById('r-qtd').textContent = filtrados.length;
   document.getElementById('r-tot').textContent = 'R$'+total.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
   document.getElementById('r-sem').textContent = sem;
-  document.getElementById('badgeN').textContent = registros.length+' itens';
-  lista.innerHTML = registros.map(r => {
+  document.getElementById('badgeN').textContent = filtrados.length+' itens';
+  // Ordenar por data mais recente
+  const ordenados = [...filtrados].sort((a,b) => (b.data||'').localeCompare(a.data||''));
+  
+  lista.innerHTML = ordenados.map(r => {
     const dt = new Date(r.data+'T12:00:00').toLocaleDateString('pt-BR');
     const vf = 'R$'+((r.valor||0)).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
     const pasta = PASTAS[r.pasta||'01'];
+    const emailBadge = r.origem === 'email' ? `<span class="pix-badge" style="background:#f0faf4;color:#276749;border-color:#9ae6b4">📧 Email</span>` : '';
     const thumb = r.foto
       ? `<img src="${r.foto}" class="reg-thumb" onclick="abrirModal('${r.id}')" alt="comprovante">`
-      : `<div class="reg-ph"><i class="ti ti-photo-off"></i></div>`;
+      : `<div class="reg-ph"><i class="${r.origem==='email'?'ti ti-mail':'ti ti-photo-off'}"></i></div>`;
     const pixBadge = r.fotoPix ? `<span class="pix-badge">PIX</span>` : '';
     return `<div class="reg-item">${thumb}<div class="reg-info">
-      <div class="reg-nome">${nomeArquivo(r)}${pixBadge}</div>
+      <div class="reg-nome">${nomeArquivo(r)}${pixBadge}${emailBadge}</div>
       <div class="reg-meta">${dt}${r.cat?' · '+r.cat:''}${r.obs?' · '+r.obs:''}</div>
       <div class="reg-pasta">📂 ${pasta?pasta.label:'FISCAL'}</div>
     </div><div>
       <div class="reg-val">${vf}</div>
-      <div class="reg-pgto">${r.pgto}</div>
+      <div class="reg-pgto">${r.pgto||''}</div>
     </div>
     <button class="del-btn" onclick="deletar('${r.id}')"><i class="ti ti-trash"></i></button></div>`;
   }).join('');
@@ -650,28 +837,35 @@ window.exportExcel = async function() {
   await carregarRegistros();
   const dados = filtrarPeriodo();
   if (!dados.length) { alert('Nenhum registro no período.'); return; }
-  const rows = [['Arquivo','Data','Fornecedor','Categoria','Valor (R$)','Pagamento','Observação','Pasta','Comprovante Recibo','Link Recibo','Comprovante PIX','Link PIX']];
+  
+  // Ordenar por data cronológica
+  dados.sort((a,b) => (a.data||'').localeCompare(b.data||''));
+  
+  const rows = [['Arquivo','Data','Fornecedor','Categoria','Valor (R$)','Pagamento','Observação','Pasta','Link DANFE','Link XML','Link PIX']];
   dados.forEach(r => {
     const dt = new Date(r.data+'T12:00:00').toLocaleDateString('pt-BR');
     const pasta = PASTAS[r.pasta||'01']?.label||'FISCAL';
     rows.push([nomeArquivo(r),dt,r.forn,r.cat,r.valor,r.pgto,r.obs,pasta,
-      r.foto?'Sim':'Não', r.foto||'',
-      r.fotoPix?'Sim':'Não', r.fotoPix||''
+      r.foto||'', r.xmlUrl||'', r.fotoPix||''
     ]);
   });
   const ws = XLSX.utils.aoa_to_sheet(rows);
-  // Links clicáveis nas colunas J e L
+  // Links clicáveis nas colunas I, J e K
   dados.forEach((r,i) => {
     if (r.foto) {
+      const c = XLSX.utils.encode_cell({r:i+1,c:8});
+      ws[c] = {v:'Abrir DANFE',t:'s',l:{Target:r.foto}};
+    }
+    if (r.xmlUrl) {
       const c = XLSX.utils.encode_cell({r:i+1,c:9});
-      ws[c] = {v:'Abrir recibo',t:'s',l:{Target:r.foto}};
+      ws[c] = {v:'Abrir XML',t:'s',l:{Target:r.xmlUrl}};
     }
     if (r.fotoPix) {
-      const c = XLSX.utils.encode_cell({r:i+1,c:11});
+      const c = XLSX.utils.encode_cell({r:i+1,c:10});
       ws[c] = {v:'Abrir PIX',t:'s',l:{Target:r.fotoPix}};
     }
   });
-  ws['!cols'] = [{wch:32},{wch:12},{wch:28},{wch:20},{wch:12},{wch:12},{wch:20},{wch:30},{wch:16},{wch:40},{wch:16},{wch:40}];
+  ws['!cols'] = [{wch:32},{wch:12},{wch:28},{wch:20},{wch:12},{wch:12},{wch:20},{wch:30},{wch:16},{wch:16},{wch:16}];
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb,ws,'Compras');
   const de = document.getElementById('p-de').value;
@@ -746,22 +940,22 @@ window.gerarZIP = async function() {
   pl.textContent='Gerando Excel...'; pf.style.width='68%';
   await new Promise(res => setTimeout(res,50));
 
-  // Excel por pasta
-  const porPasta = {'01':[],'02':[],'03':[]};
-  dados.forEach(r => { const p = r.pasta||'01'; if(porPasta[p]) porPasta[p].push(r); });
+  // Ordenar por data cronológica
+  dados.sort((a,b) => (a.data||'').localeCompare(b.data||''));
 
   const wb = XLSX.utils.book_new();
-  const rowsAll = [['Arquivo','Data','Fornecedor','Categoria','Valor (R$)','Pagamento','Observação','Pasta','Link Recibo','Link PIX']];
+  const rowsAll = [['Arquivo','Data','Fornecedor','Categoria','Valor (R$)','Pagamento','Observação','Pasta','Link DANFE','Link XML','Link PIX']];
   dados.forEach(r => {
     const dt = new Date(r.data+'T12:00:00').toLocaleDateString('pt-BR');
-    rowsAll.push([nomeArquivo(r),dt,r.forn,r.cat,r.valor,r.pgto,r.obs,PASTAS[r.pasta||'01']?.label,r.foto||'',r.fotoPix||'']);
+    rowsAll.push([nomeArquivo(r),dt,r.forn,r.cat,r.valor,r.pgto,r.obs,PASTAS[r.pasta||'01']?.label,r.foto||'',r.xmlUrl||'',r.fotoPix||'']);
   });
   const wsAll = XLSX.utils.aoa_to_sheet(rowsAll);
   dados.forEach((r,i) => {
-    if(r.foto){const c=XLSX.utils.encode_cell({r:i+1,c:8});wsAll[c]={v:'Abrir recibo',t:'s',l:{Target:r.foto}};}
-    if(r.fotoPix){const c=XLSX.utils.encode_cell({r:i+1,c:9});wsAll[c]={v:'Abrir PIX',t:'s',l:{Target:r.fotoPix}};}
+    if(r.foto){const c=XLSX.utils.encode_cell({r:i+1,c:8});wsAll[c]={v:'Abrir DANFE',t:'s',l:{Target:r.foto}};}
+    if(r.xmlUrl){const c=XLSX.utils.encode_cell({r:i+1,c:9});wsAll[c]={v:'Abrir XML',t:'s',l:{Target:r.xmlUrl}};}
+    if(r.fotoPix){const c=XLSX.utils.encode_cell({r:i+1,c:10});wsAll[c]={v:'Abrir PIX',t:'s',l:{Target:r.fotoPix}};}
   });
-  wsAll['!cols']=[{wch:32},{wch:12},{wch:28},{wch:20},{wch:12},{wch:12},{wch:20},{wch:30},{wch:40},{wch:40}];
+  wsAll['!cols']=[{wch:32},{wch:12},{wch:28},{wch:20},{wch:12},{wch:12},{wch:20},{wch:30},{wch:16},{wch:16},{wch:16}];
   XLSX.utils.book_append_sheet(wb,wsAll,'Todos os registros');
   zip.file(`${base}/Resumo_${de}_${ate}.xlsx`, XLSX.write(wb,{bookType:'xlsx',type:'array'}));
 
@@ -864,9 +1058,315 @@ async function lerComIA() {
   btn.disabled = false;
 }
 
+// ============================================================
+// IMPORTADOR OFX
+// ============================================================
+let ofxTransacoes = [];
+
+window.importarOFX = function(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      ofxTransacoes = parseOFX(e.target.result);
+      document.getElementById('ofxResumo').style.display = 'block';
+      renderOFX();
+    } catch(err) {
+      alert('Erro ao ler o arquivo OFX: ' + err.message);
+    }
+  };
+  reader.readAsText(file, 'latin1');
+};
+
+function parseOFX(texto) {
+  const transacoes = [];
+  // Extrair todas as transações STMTTRN
+  const regex = /<STMTTRN>([\s\S]*?)<\/STMTTRN>/gi;
+  let match;
+  while ((match = regex.exec(texto)) !== null) {
+    const bloco = match[1];
+    const tipo = (bloco.match(/<TRNTYPE>(.*)/i) || [])[1]?.trim() || '';
+    const dtpost = (bloco.match(/<DTPOSTED>(.*)/i) || [])[1]?.trim() || '';
+    const valor = parseFloat((bloco.match(/<TRNAMT>(.*)/i) || [])[1]?.trim() || '0');
+    const memo = (bloco.match(/<MEMO>(.*)/i) || [])[1]?.trim() || '';
+    const name = (bloco.match(/<NAME>(.*)/i) || [])[1]?.trim() || '';
+    const fitid = (bloco.match(/<FITID>(.*)/i) || [])[1]?.trim() || '';
+
+    // Formatar data YYYYMMDD para YYYY-MM-DD
+    let data = '';
+    if (dtpost.length >= 8) {
+      data = dtpost.slice(0,4) + '-' + dtpost.slice(4,6) + '-' + dtpost.slice(6,8);
+    }
+
+    transacoes.push({
+      tipo, data, valor,
+      desc: memo || name || tipo,
+      fitid,
+      entrada: valor > 0,
+      saida: valor < 0
+    });
+  }
+  return transacoes.sort((a,b) => (b.data||'').localeCompare(a.data||''));
+}
+
+window.renderOFX = function() {
+  const filtro = document.getElementById('ofxFiltro').value;
+  const lista = document.getElementById('ofxLista');
+
+  let filtrados = ofxTransacoes;
+  if (filtro === 'entrada') filtrados = ofxTransacoes.filter(t => t.entrada);
+  if (filtro === 'saida') filtrados = ofxTransacoes.filter(t => t.saida);
+  if (filtro === 'sempix') filtrados = ofxTransacoes.filter(t => t.saida && !temComprovante(t));
+
+  const entradas = ofxTransacoes.filter(t=>t.entrada).reduce((s,t)=>s+t.valor,0);
+  const saidas = Math.abs(ofxTransacoes.filter(t=>t.saida).reduce((s,t)=>s+t.valor,0));
+
+  document.getElementById('ofx-total').textContent = ofxTransacoes.length;
+  document.getElementById('ofx-entrada').textContent = 'R$'+entradas.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+  document.getElementById('ofx-saida').textContent = 'R$'+saidas.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+
+  if (!filtrados.length) {
+    lista.innerHTML = '<div class="empty"><i class="ti ti-check"></i>Nenhuma transação neste filtro.</div>';
+    return;
+  }
+
+  lista.innerHTML = filtrados.map(t => {
+    const vf = 'R$' + Math.abs(t.valor).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+    const dt = t.data ? new Date(t.data+'T12:00:00').toLocaleDateString('pt-BR') : '';
+    const classe = t.entrada ? 'ofx-entrada' : 'ofx-saida';
+    const valClasse = t.entrada ? 'ofx-val-pos' : 'ofx-val-neg';
+    const sinal = t.entrada ? '+' : '-';
+    const comp = temComprovante(t);
+    const badge = t.saida ? (comp
+      ? `<span class="ofx-match">✅ Com nota</span>`
+      : `<span class="ofx-semcomp">⚠️ Sem nota</span>`) : '';
+    return `<div class="ofx-item ${classe}">
+      <div style="flex:1;min-width:0">
+        <div class="ofx-desc">${t.desc}${badge}</div>
+        <div class="ofx-meta">${dt}</div>
+      </div>
+      <div class="${valClasse}">${sinal}${vf}</div>
+    </div>`;
+  }).join('');
+};
+
+function temComprovante(transacao) {
+  // Verificar se existe registro no Firebase com valor e data próximos
+  const valorAbs = Math.abs(transacao.valor);
+  return registros.some(r => {
+    if (!r.data || !r.valor) return false;
+    const mesmaDia = r.data === transacao.data;
+    const mesmaData3dias = Math.abs(new Date(r.data+'T12:00:00') - new Date(transacao.data+'T12:00:00')) <= 3*24*60*60*1000;
+    const valorProximo = Math.abs((r.valor||0) - valorAbs) < 0.02;
+    return valorProximo && mesmaData3dias;
+  });
+}
+
+window.exportarOFXExcel = function() {
+  if (!ofxTransacoes.length) return;
+  const rows = [['Data','Descrição','Tipo','Valor (R$)','Entrada/Saída','Comprovante no app']];
+  ofxTransacoes.forEach(t => {
+    const dt = t.data ? new Date(t.data+'T12:00:00').toLocaleDateString('pt-BR') : '';
+    const comp = t.saida ? (temComprovante(t) ? 'Sim' : 'Não') : '-';
+    rows.push([dt, t.desc, t.tipo, Math.abs(t.valor), t.entrada?'Entrada':'Saída', comp]);
+  });
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+  ws['!cols'] = [{wch:12},{wch:40},{wch:15},{wch:14},{wch:12},{wch:18}];
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Extrato');
+  XLSX.writeFile(wb, 'Extrato_Stone.xlsx');
+};
+
+// ============================================================
+// DASHBOARD
+// ============================================================
+const CORES_CAT = {
+  'Bebidas':'#3182ce','Cigarro':'#718096','Hortifruti':'#38a169',
+  'Frios e laticínios':'#00b5d8','Padaria / pão':'#d69e2e',
+  'Mercadoria geral':'#805ad5','Limpeza':'#319795','Doces':'#ed64a6',
+  'Manutenção':'#e53e3e','Acessórios':'#dd6b20','Açougue':'#c53030',
+  'Mercearia':'#2b6cb0','Despesa operacional':'#4a5568','Outro':'#a0aec0'
+};
+
+function renderDashboard() {
+  const ano = document.getElementById('dash-ano').value || new Date().getFullYear().toString();
+  const mes = document.getElementById('dash-mes').value || '';
+
+  // Inicializar selects
+  const anos = [...new Set(registros.filter(r=>r.data).map(r=>r.data.slice(0,4)))].sort().reverse();
+  const selAno = document.getElementById('dash-ano');
+  if (selAno.options.length === 0) {
+    anos.forEach(a => { const o=document.createElement('option'); o.value=a; o.textContent=a; selAno.appendChild(o); });
+  }
+  const selMes = document.getElementById('dash-mes');
+  selMes.innerHTML = '<option value="">Todos os meses</option>';
+  const mesesDisp = [...new Set(registros.filter(r=>r.data&&r.data.startsWith(ano)).map(r=>r.data.slice(5,7)))].sort();
+  const nomMes = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+  mesesDisp.forEach(m => { const o=document.createElement('option'); o.value=m; o.textContent=nomMes[parseInt(m)-1]; if(m===mes)o.selected=true; selMes.appendChild(o); });
+
+  // Filtrar registros
+  let filtrados = registros.filter(r => r.data && r.data.startsWith(ano));
+  if (mes) filtrados = filtrados.filter(r => r.data.slice(5,7) === mes);
+
+  if (!filtrados.length) {
+    document.getElementById('dash-resumo').style.display = 'none';
+    document.getElementById('dash-categorias').innerHTML = '<div class="empty"><i class="ti ti-chart-off"></i>Sem dados no período.</div>';
+    return;
+  }
+
+  // Resumo
+  document.getElementById('dash-resumo').style.display = 'grid';
+  const total = filtrados.reduce((s,r)=>s+(r.valor||0),0);
+  const media = total / filtrados.length;
+  document.getElementById('dash-qtd').textContent = filtrados.length;
+  document.getElementById('dash-total').textContent = 'R$'+total.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+  document.getElementById('dash-media').textContent = 'R$'+media.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+
+  // Comparativo mês anterior
+  if (mes) {
+    const mesAnterior = String(parseInt(mes)-1).padStart(2,'0');
+    const anoAnterior = parseInt(mes) === 1 ? String(parseInt(ano)-1) : ano;
+    const mesAntStr = parseInt(mes) === 1 ? '12' : mesAnterior;
+    const anterior = registros.filter(r=>r.data&&r.data.startsWith(anoAnterior)&&r.data.slice(5,7)===mesAntStr);
+    const totalAnterior = anterior.reduce((s,r)=>s+(r.valor||0),0);
+    if (totalAnterior > 0) {
+      const diff = ((total-totalAnterior)/totalAnterior*100).toFixed(1);
+      const sinal = diff > 0 ? '📈 +' : '📉 ';
+      const cor = diff > 0 ? '#c53030' : '#276749';
+      document.getElementById('dash-comparativo').style.display = 'block';
+      document.getElementById('dash-comparativo').innerHTML = `<span style="color:${cor};font-weight:500">${sinal}${diff}% em relação ao mês anterior</span> — Mês anterior: R$${totalAnterior.toLocaleString('pt-BR',{minimumFractionDigits:2})}`;
+    } else {
+      document.getElementById('dash-comparativo').style.display = 'none';
+    }
+  } else {
+    document.getElementById('dash-comparativo').style.display = 'none';
+  }
+
+  // Gráfico por categoria
+  const porCat = {};
+  filtrados.forEach(r => {
+    const cat = r.cat || 'Outro';
+    porCat[cat] = (porCat[cat]||0) + (r.valor||0);
+  });
+  const ordenado = Object.entries(porCat).sort((a,b)=>b[1]-a[1]);
+  const html = ordenado.map(([cat,val]) => {
+    const pct = (val/total*100).toFixed(1);
+    const cor = CORES_CAT[cat] || '#a0aec0';
+    const vf = 'R$'+val.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+    return `<div class="cat-row"><span class="cat-label">● ${cat}</span><span class="cat-valor">${vf}</span><span class="cat-pct">${pct}%</span></div>
+    <div class="cat-bar" style="background:${cor};width:${pct}%;max-width:100%"></div>`;
+  }).join('');
+  document.getElementById('dash-categorias').innerHTML = '<div style="font-size:12px;color:#888;margin-bottom:8px;font-weight:500;text-transform:uppercase;letter-spacing:.04em">Gastos por categoria</div>' + html;
+}
+
+// ============================================================
+// FORNECEDORES
+// ============================================================
+function renderFornecedores() {
+  const props = JSON.parse(localStorage.getItem('forn-frequencias') || '{}');
+  
+  // Agrupar por fornecedor
+  const fornMap = {};
+  registros.forEach(r => {
+    if (!r.forn || r.forn === 'VERIFICAR' || r.forn === 'FORNECEDOR') return;
+    if (!fornMap[r.forn]) fornMap[r.forn] = { nome:r.forn, registros:[], datas:[] };
+    fornMap[r.forn].registros.push(r);
+    if (r.data) fornMap[r.forn].datas.push(r.data);
+  });
+
+  const fornList = Object.values(fornMap).sort((a,b) => {
+    const totA = a.registros.reduce((s,r)=>s+(r.valor||0),0);
+    const totB = b.registros.reduce((s,r)=>s+(r.valor||0),0);
+    return totB - totA;
+  });
+
+  // Alertas
+  const alertas = [];
+  fornList.forEach(f => {
+    const freq = props[f.nome];
+    if (!freq) return;
+    const datas = f.datas.sort().reverse();
+    if (!datas.length) return;
+    const ultimaData = new Date(datas[0]+'T12:00:00');
+    const hoje = new Date();
+    const diasPassados = Math.floor((hoje-ultimaData)/(1000*60*60*24));
+    const diasEsperado = freq === 'semanal' ? 7 : 15;
+    if (diasPassados > diasEsperado + 2) {
+      alertas.push(`⚠️ <strong>${f.nome}</strong> — última nota há ${diasPassados} dias (frequência ${freq})`);
+    }
+  });
+
+  const alertasEl = document.getElementById('dash-alertas');
+  if (alertas.length) {
+    alertasEl.innerHTML = alertas.map(a => `<div class="alerta-item"><i class="ti ti-bell" style="color:#d69e2e;flex-shrink:0"></i><span>${a}</span></div>`).join('');
+  } else {
+    alertasEl.innerHTML = '<div style="font-size:12px;color:#888;margin-bottom:8px">✅ Nenhum alerta de nota atrasada.</div>';
+  }
+
+  // Lista de fornecedores
+  const lista = document.getElementById('forn-lista');
+  if (!fornList.length) { lista.innerHTML = '<div class="empty"><i class="ti ti-truck"></i>Nenhum fornecedor ainda.</div>'; return; }
+
+  lista.innerHTML = fornList.map(f => {
+    const total = f.registros.reduce((s,r)=>s+(r.valor||0),0);
+    const media = total/f.registros.length;
+    const ultimaData = f.datas.sort().reverse()[0];
+    const dt = ultimaData ? new Date(ultimaData+'T12:00:00').toLocaleDateString('pt-BR') : '-';
+    const freq = props[f.nome] ? `<span class="pix-badge">${props[f.nome]}</span>` : '';
+    return `<div class="forn-item">
+      <div class="forn-nome">${f.nome} ${freq}</div>
+      <div class="forn-stats">
+        <div class="forn-stat"><div class="forn-stat-lbl">Total comprado</div><div class="forn-stat-val">R$${total.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}</div></div>
+        <div class="forn-stat"><div class="forn-stat-lbl">Ticket médio</div><div class="forn-stat-val">R$${media.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}</div></div>
+        <div class="forn-stat"><div class="forn-stat-lbl">Última nota</div><div class="forn-stat-val">${dt}</div></div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Config frequências
+  const configEl = document.getElementById('forn-config');
+  configEl.style.display = 'block';
+  document.getElementById('forn-config-lista').innerHTML = fornList.map(f => `
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+      <span style="flex:1;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${f.nome}</span>
+      <select data-forn="${f.nome}" style="font-size:12px;border:1px solid #e5e5e3;border-radius:8px;padding:6px 10px;font-family:inherit">
+        <option value="">Sem alerta</option>
+        <option value="semanal" ${props[f.nome]==='semanal'?'selected':''}>Semanal</option>
+        <option value="quinzenal" ${props[f.nome]==='quinzenal'?'selected':''}>Quinzenal</option>
+        <option value="mensal" ${props[f.nome]==='mensal'?'selected':''}>Mensal</option>
+      </select>
+    </div>`).join('');
+}
+
+window.salvarFrequencias = function() {
+  const selects = document.querySelectorAll('#forn-config-lista select');
+  const props = {};
+  selects.forEach(s => { if (s.value) props[s.dataset.forn] = s.value; });
+  localStorage.setItem('forn-frequencias', JSON.stringify(props));
+  alert('✅ Configurações salvas!');
+  renderFornecedores();
+};
+
+window.enviarParaContador = async function() {
+  const email = document.getElementById('emailContador').value.trim();
+  if (!email) { alert('Digite o email do contador primeiro.'); return; }
+  localStorage.setItem('emailContador', email);
+  alert('Para enviar ao contador, gere o ZIP e anexe manualmente ao email: ' + email + '
+
+Em breve integraremos o envio automático!');
+};
+
+// Restaurar email do contador
+window.addEventListener('load', function() {
+  const email = localStorage.getItem('emailContador');
+  if (email) document.getElementById('emailContador').value = email;
+});
+
 window.filtro=filtro; window.trocarTab=trocarTab; window.limpar=limpar;
 window.salvar=salvar; window.selecionarPasta=selecionarPasta; window.togglePix=togglePix;
-window.lerComIA=lerComIA;
+window.lerComIA=lerComIA; window.renderOFX=renderOFX; window.renderDashboard=renderDashboard;
+window.renderFornecedores=renderFornecedores;
 </script>
 </body>
 </html>
