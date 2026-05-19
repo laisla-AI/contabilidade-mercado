@@ -152,9 +152,20 @@ textarea{resize:vertical;min-height:52px}
         <label>Categoria</label>
         <select id="i-cat">
           <option value="">Selecione...</option>
-          <option>Bebidas</option><option>Frios e laticínios</option><option>Hortifruti</option>
-          <option>Padaria / pão</option><option>Cigarro</option><option>Limpeza</option>
-          <option>Mercadoria geral</option><option>Despesa operacional</option><option>Outro</option>
+          <option>Açougue</option>
+          <option>Acessórios</option>
+          <option>Bebidas</option>
+          <option>Cigarro</option>
+          <option>Despesa operacional</option>
+          <option>Doces</option>
+          <option>Frios e laticínios</option>
+          <option>Hortifruti</option>
+          <option>Limpeza</option>
+          <option>Manutenção</option>
+          <option>Mercadoria geral</option>
+          <option>Mercearia</option>
+          <option>Padaria / pão</option>
+          <option>Outro</option>
         </select>
       </div>
       <div class="fg">
@@ -635,7 +646,8 @@ function filtrarPeriodo() {
   return registros.filter(r => r.data>=de && r.data<=ate);
 }
 
-window.exportExcel = function() {
+window.exportExcel = async function() {
+  await carregarRegistros();
   const dados = filtrarPeriodo();
   if (!dados.length) { alert('Nenhum registro no período.'); return; }
   const rows = [['Arquivo','Data','Fornecedor','Categoria','Valor (R$)','Pagamento','Observação','Pasta','Comprovante Recibo','Link Recibo','Comprovante PIX','Link PIX']];
@@ -668,11 +680,11 @@ window.exportExcel = function() {
 };
 
 window.gerarZIP = async function() {
-  if (registros.length === 0 && window._getDocs) {
-    document.getElementById('progWrap').style.display='block';
-    document.getElementById('progLbl').textContent='Buscando registros...';
-    await carregarRegistros();
-  }
+  // Sempre recarregar do Firebase para garantir dados mais recentes
+  const pw2 = document.getElementById('progWrap');
+  const pl2 = document.getElementById('progLbl');
+  pw2.style.display='block'; pl2.textContent='Buscando registros atualizados...';
+  await carregarRegistros();
   const dados = filtrarPeriodo();
   if (!dados.length) { alert('Nenhum registro no período selecionado.'); return; }
   const pw = document.getElementById('progWrap');
@@ -705,34 +717,26 @@ window.gerarZIP = async function() {
     const pasta = PASTAS[r.pasta||'01'];
     const caminho = `${base}/${pasta.path}`;
 
+    pl.textContent = `Baixando ${i+1}/${dados.length}: ${r.forn||''}...`;
+
     // Comprovante de recebimento
     if (r.foto) {
       try {
-        if (r.foto.startsWith('http')) {
-          const resp = await fetch(r.foto);
-          const blob = await resp.blob();
-          const ext = blob.type.includes('png')?'png':'jpg';
-          zip.file(`${caminho}/${nomeArquivo(r)}.${ext}`, blob);
-        } else {
-          const resp = await fetch(r.foto);
-          zip.file(`${caminho}/${nomeArquivo(r)}.jpg`, await resp.blob());
-        }
-      } catch(e) { console.error(e); }
+        const resp = await fetch(r.foto.startsWith('http') ? r.foto : r.foto);
+        const blob = await resp.blob();
+        const ext = blob.type.includes('png')?'png':'jpg';
+        zip.file(`${caminho}/${nomeArquivo(r)}.${ext}`, blob);
+      } catch(e) { console.error('Erro foto:', e); }
     }
 
     // Comprovante PIX
     if (r.fotoPix) {
       try {
-        if (r.fotoPix.startsWith('http')) {
-          const resp = await fetch(r.fotoPix);
-          const blob = await resp.blob();
-          const ext = blob.type.includes('png')?'png':'jpg';
-          zip.file(`${caminho}/${nomeArquivoPix(r)}.${ext}`, blob);
-        } else {
-          const resp = await fetch(r.fotoPix);
-          zip.file(`${caminho}/${nomeArquivoPix(r)}.jpg`, await resp.blob());
-        }
-      } catch(e) { console.error(e); }
+        const resp = await fetch(r.fotoPix);
+        const blob = await resp.blob();
+        const ext = blob.type.includes('png')?'png':'jpg';
+        zip.file(`${caminho}/${nomeArquivoPix(r)}.${ext}`, blob);
+      } catch(e) { console.error('Erro PIX:', e); }
     }
 
     pf.style.width = Math.round(5+(i+1)/dados.length*60)+'%';
