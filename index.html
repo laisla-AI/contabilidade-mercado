@@ -351,19 +351,40 @@ async function salvar() {
   btn.disabled = true;
   btn.innerHTML = '<div class="spinner"></div> Salvando...';
   try {
-    if (!window._db) throw new Error('Firebase não conectado');
+    // Aguardar Firebase conectar se ainda não estiver pronto
+    let tentativas = 0;
+    while (!window._addDoc && tentativas < 10) {
+      await new Promise(res => setTimeout(res, 500));
+      tentativas++;
+    }
+    if (!window._addDoc) throw new Error('Firebase não conectou. Verifique sua internet e recarregue a página.');
+    
+    // Comprimir foto se muito grande para evitar erro no Firebase
+    let foto = getImg();
+    if (foto && foto.length > 900000) {
+      const tmpCvs = document.createElement('canvas');
+      const tmpImg = new Image();
+      await new Promise(res => { tmpImg.onload = res; tmpImg.src = foto; });
+      const maxW = 1200;
+      const sc = Math.min(1, maxW / tmpImg.width);
+      tmpCvs.width = tmpImg.width * sc;
+      tmpCvs.height = tmpImg.height * sc;
+      tmpCvs.getContext('2d').drawImage(tmpImg, 0, 0, tmpCvs.width, tmpCvs.height);
+      foto = tmpCvs.toDataURL('image/jpeg', 0.7);
+    }
+
     const reg = {
       num: contador++, data, valor, forn,
       cat: document.getElementById('i-cat').value,
       pgto, obs: document.getElementById('i-obs').value.trim(),
-      foto: getImg(),
+      foto: foto,
       criadoEm: new Date().toISOString()
     };
     await window._addDoc(window._col, reg);
     mostrarAlerta('ok');
     limpar();
   } catch(e) {
-    document.getElementById('errMsg').textContent = 'Erro ao salvar: ' + e.message;
+    document.getElementById('errMsg').textContent = 'Erro: ' + e.message;
     mostrarAlerta('err');
   }
   btn.disabled = false;
