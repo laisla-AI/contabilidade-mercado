@@ -475,9 +475,10 @@ function togglePix() {
 
 window.addEventListener('load', function() {
   setTimeout(function() {
-    if (window._getDocs) carregarRegistros();
-    else setTimeout(carregarRegistros, 1500);
-  }, 800);
+    carregarRegistros().then(function() {
+      renderLista();
+    });
+  }, 1000);
 });
 
 function trocarTab(id) {
@@ -490,12 +491,10 @@ function trocarTab(id) {
   
   if (id === 'lista' || id === 'exportar' || id === 'banco' || id === 'dashboard' || id === 'fornecedores') {
     carregarRegistros().then(function() {
+      if (id === 'lista') renderLista();
       if (id === 'dashboard') renderDashboard();
       if (id === 'fornecedores') renderFornecedores();
-    }).catch(function(e) {
-      console.error('Erro ao carregar:', e);
-      if (id === 'dashboard') renderDashboard();
-      if (id === 'fornecedores') renderFornecedores();
+      if (id === 'exportar' || id === 'banco') renderLista();
     });
   }
 }
@@ -710,8 +709,6 @@ async function carregarRegistros() {
     const q = window._query(window._col, window._orderBy('criadoEm','desc'));
     const snap = await window._getDocs(q);
     registros = snap.docs.map(d => ({id:d.id,...d.data()}));
-    const listaEl = document.getElementById('lista');
-    if (listaEl) renderLista();
   } catch(e) { console.error('Erro carregarRegistros:', e); }
   if (ll) ll.style.display = 'none';
 }
