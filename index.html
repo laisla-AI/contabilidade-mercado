@@ -135,9 +135,6 @@ textarea{resize:vertical;min-height:52px}
 <div class="tabs">
   <button class="tab active" onclick="trocarTab('registro')"><i class="ti ti-plus"></i>Novo</button>
   <button class="tab" onclick="trocarTab('lista')"><i class="ti ti-list"></i>Registros</button>
-  <button class="tab" onclick="trocarTab('dashboard')"><i class="ti ti-chart-pie"></i>Dashboard</button>
-  <button class="tab" onclick="trocarTab('banco')"><i class="ti ti-building-bank"></i>Banco</button>
-  <button class="tab" onclick="trocarTab('fornecedores')"><i class="ti ti-truck"></i>Fornecedores</button>
   <button class="tab" onclick="trocarTab('exportar')"><i class="ti ti-download"></i>Exportar</button>
 </div>
 
@@ -273,84 +270,6 @@ textarea{resize:vertical;min-height:52px}
   <div id="lista"><div class="empty"><i class="ti ti-clipboard-list"></i>Nenhum registro ainda.</div></div>
 </div>
 
-<!-- PAINEL DASHBOARD -->
-<div class="panel" id="panel-dashboard">
-  <div class="card" id="dash-card">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-      <div style="font-size:14px;font-weight:500"><i class="ti ti-chart-pie" style="vertical-align:-2px;margin-right:5px"></i>Dashboard financeiro</div>
-      <div style="display:flex;gap:6px">
-        <select id="dash-ano" onchange="renderDashboard()" style="font-size:12px;border:1px solid #e5e5e3;border-radius:8px;padding:6px 10px;font-family:inherit"></select>
-        <select id="dash-mes" onchange="renderDashboard()" style="font-size:12px;border:1px solid #e5e5e3;border-radius:8px;padding:6px 10px;font-family:inherit">
-          <option value="">Todos</option>
-        </select>
-      </div>
-    </div>
-
-    <!-- Comparativo mês a mês -->
-    <div id="dash-comparativo" style="background:#f9f9f7;border-radius:8px;padding:10px 12px;margin-bottom:12px;font-size:13px;display:none"></div>
-
-    <!-- Resumo -->
-    <div class="resumo" id="dash-resumo" style="display:none">
-      <div class="rcard"><div class="rlbl">Registros</div><div class="rval" id="dash-qtd">0</div></div>
-      <div class="rcard"><div class="rlbl">Total gasto</div><div class="rval" id="dash-total">R$0</div></div>
-      <div class="rcard"><div class="rlbl">Média por registro</div><div class="rval" id="dash-media">R$0</div></div>
-    </div>
-
-    <!-- Gráfico por categoria -->
-    <div id="dash-categorias" style="margin-top:12px"></div>
-  </div>
-</div>
-
-<!-- PAINEL FORNECEDORES -->
-<div class="panel" id="panel-fornecedores">
-  <div class="card">
-    <div style="font-size:14px;font-weight:500;margin-bottom:4px"><i class="ti ti-truck" style="vertical-align:-2px;margin-right:5px"></i>Fornecedores</div>
-    <div style="font-size:12px;color:#888;margin-bottom:12px">Histórico, ticket médio e alertas de nota não chegou.</div>
-
-    <!-- Alertas -->
-    <div id="dash-alertas" style="margin-bottom:12px"></div>
-
-    <!-- Lista de fornecedores -->
-    <div id="forn-lista"><div class="empty"><i class="ti ti-truck"></i>Carregando fornecedores...</div></div>
-  </div>
-
-  <!-- Config de frequência -->
-  <div class="card" id="forn-config" style="display:none">
-    <div style="font-size:13px;font-weight:500;margin-bottom:10px">⚙️ Configurar alertas de frequência</div>
-    <div id="forn-config-lista"></div>
-    <button class="btn-p" onclick="salvarFrequencias()" style="margin-top:10px"><i class="ti ti-device-floppy"></i>Salvar configurações</button>
-  </div>
-</div>
-
-<!-- PAINEL BANCO -->
-<div class="panel" id="panel-banco">
-  <div class="card">
-    <div style="font-size:14px;font-weight:500;margin-bottom:6px"><i class="ti ti-file-import" style="vertical-align:-2px;margin-right:5px"></i>Importar extrato OFX</div>
-    <div style="font-size:12px;color:#888;margin-bottom:12px">Baixe o extrato da Stone em formato OFX e importe aqui para ver todas as transações do período.</div>
-    <div class="upload-zone" id="ofxZone" style="margin-bottom:12px">
-      <input type="file" id="i-ofx" accept=".ofx,.OFX" onchange="importarOFX(this)">
-      <div class="ulbl"><i class="ti ti-file-spreadsheet" style="color:#2b6cb0"></i>Clique ou arraste o arquivo .OFX da Stone</div>
-    </div>
-    <div id="ofxResumo" style="display:none">
-      <div class="resumo" style="margin-bottom:12px">
-        <div class="rcard"><div class="rlbl">Transações</div><div class="rval" id="ofx-total">0</div></div>
-        <div class="rcard"><div class="rlbl">Entradas</div><div class="rval" id="ofx-entrada" style="color:#276749">R$0</div></div>
-        <div class="rcard"><div class="rlbl">Saídas</div><div class="rval" id="ofx-saida" style="color:#c53030">R$0</div></div>
-      </div>
-      <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
-        <select id="ofxFiltro" onchange="renderOFX()" style="flex:1;font-size:13px;border:1px solid #e5e5e3;border-radius:8px;padding:8px 12px;font-family:inherit">
-          <option value="">Todas as transações</option>
-          <option value="entrada">Só entradas</option>
-          <option value="saida">Só saídas</option>
-          <option value="sempix">Saídas sem comprovante</option>
-        </select>
-        <button class="ebtn destaque" onclick="exportarOFXExcel()" style="font-size:13px"><i class="ti ti-file-spreadsheet"></i>Exportar Excel</button>
-      </div>
-      <div id="ofxLista"></div>
-    </div>
-  </div>
-</div>
-
 <!-- PAINEL EXPORTAR -->
 <div class="panel" id="panel-exportar">
   <div class="card">
@@ -475,28 +394,19 @@ function togglePix() {
 
 window.addEventListener('load', function() {
   setTimeout(function() {
-    carregarRegistros().then(function() {
-      renderLista();
-    });
-  }, 1000);
+    if (window._getDocs) carregarRegistros();
+    else setTimeout(carregarRegistros, 1500);
+  }, 800);
 });
 
 function trocarTab(id) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  const tabAtiva = document.querySelector(`.tab[onclick="trocarTab('${id}')"]`);
+  const tabAtiva = document.querySelector(\`.tab[onclick="trocarTab('${id}')"]\`);
   if (tabAtiva) tabAtiva.classList.add('active');
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   const panel = document.getElementById('panel-'+id);
   if (panel) panel.classList.add('active');
-  
-  if (id === 'lista' || id === 'exportar' || id === 'banco' || id === 'dashboard' || id === 'fornecedores') {
-    carregarRegistros().then(function() {
-      if (id === 'lista') renderLista();
-      if (id === 'dashboard') renderDashboard();
-      if (id === 'fornecedores') renderFornecedores();
-      if (id === 'exportar' || id === 'banco') renderLista();
-    });
-  }
+  if (id === 'lista' || id === 'exportar' || id === 'banco') carregarRegistros();
 }
 
 // Upload comprovante recebimento
@@ -709,6 +619,7 @@ async function carregarRegistros() {
     const q = window._query(window._col, window._orderBy('criadoEm','desc'));
     const snap = await window._getDocs(q);
     registros = snap.docs.map(d => ({id:d.id,...d.data()}));
+    renderLista();
   } catch(e) { console.error('Erro carregarRegistros:', e); }
   if (ll) ll.style.display = 'none';
 }
@@ -1198,195 +1109,9 @@ window.exportarOFXExcel = function() {
   XLSX.writeFile(wb, 'Extrato_Stone.xlsx');
 };
 
-// ============================================================
-// DASHBOARD
-// ============================================================
-const CORES_CAT = {
-  'Bebidas':'#3182ce','Cigarro':'#718096','Hortifruti':'#38a169',
-  'Frios e laticínios':'#00b5d8','Padaria / pão':'#d69e2e',
-  'Mercadoria geral':'#805ad5','Limpeza':'#319795','Doces':'#ed64a6',
-  'Manutenção':'#e53e3e','Acessórios':'#dd6b20','Açougue':'#c53030',
-  'Mercearia':'#2b6cb0','Despesa operacional':'#4a5568','Outro':'#a0aec0'
-};
-
-function renderDashboard() {
-  const ano = document.getElementById('dash-ano').value || new Date().getFullYear().toString();
-  const mes = document.getElementById('dash-mes').value || '';
-
-  // Inicializar selects
-  const anos = [...new Set(registros.filter(r=>r.data).map(r=>r.data.slice(0,4)))].sort().reverse();
-  const selAno = document.getElementById('dash-ano');
-  const anoAtualVal = selAno.value || new Date().getFullYear().toString();
-  selAno.innerHTML = '';
-  anos.forEach(a => { const o=document.createElement('option'); o.value=a; o.textContent=a; if(a===anoAtualVal)o.selected=true; selAno.appendChild(o); });
-  const selMes = document.getElementById('dash-mes');
-  selMes.innerHTML = '<option value="">Todos os meses</option>';
-  const mesesDisp = [...new Set(registros.filter(r=>r.data&&r.data.startsWith(ano)).map(r=>r.data.slice(5,7)))].sort();
-  const nomMes = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-  mesesDisp.forEach(m => { const o=document.createElement('option'); o.value=m; o.textContent=nomMes[parseInt(m)-1]; if(m===mes)o.selected=true; selMes.appendChild(o); });
-
-  // Filtrar registros
-  let filtrados = registros.filter(r => r.data && r.data.startsWith(ano));
-  if (mes) filtrados = filtrados.filter(r => r.data.slice(5,7) === mes);
-
-  if (!filtrados.length) {
-    document.getElementById('dash-resumo').style.display = 'none';
-    document.getElementById('dash-categorias').innerHTML = '<div class="empty"><i class="ti ti-chart-off"></i>Sem dados no período.</div>';
-    return;
-  }
-
-  // Resumo
-  document.getElementById('dash-resumo').style.display = 'grid';
-  const total = filtrados.reduce((s,r)=>s+(r.valor||0),0);
-  const media = total / filtrados.length;
-  document.getElementById('dash-qtd').textContent = filtrados.length;
-  document.getElementById('dash-total').textContent = 'R$'+total.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
-  document.getElementById('dash-media').textContent = 'R$'+media.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
-
-  // Comparativo mês anterior
-  if (mes) {
-    const mesAnterior = String(parseInt(mes)-1).padStart(2,'0');
-    const anoAnterior = parseInt(mes) === 1 ? String(parseInt(ano)-1) : ano;
-    const mesAntStr = parseInt(mes) === 1 ? '12' : mesAnterior;
-    const anterior = registros.filter(r=>r.data&&r.data.startsWith(anoAnterior)&&r.data.slice(5,7)===mesAntStr);
-    const totalAnterior = anterior.reduce((s,r)=>s+(r.valor||0),0);
-    if (totalAnterior > 0) {
-      const diff = ((total-totalAnterior)/totalAnterior*100).toFixed(1);
-      const sinal = diff > 0 ? '📈 +' : '📉 ';
-      const cor = diff > 0 ? '#c53030' : '#276749';
-      document.getElementById('dash-comparativo').style.display = 'block';
-      document.getElementById('dash-comparativo').innerHTML = `<span style="color:${cor};font-weight:500">${sinal}${diff}% em relação ao mês anterior</span> — Mês anterior: R$${totalAnterior.toLocaleString('pt-BR',{minimumFractionDigits:2})}`;
-    } else {
-      document.getElementById('dash-comparativo').style.display = 'none';
-    }
-  } else {
-    document.getElementById('dash-comparativo').style.display = 'none';
-  }
-
-  // Gráfico por categoria
-  const porCat = {};
-  filtrados.forEach(r => {
-    const cat = r.cat || 'Outro';
-    porCat[cat] = (porCat[cat]||0) + (r.valor||0);
-  });
-  const ordenado = Object.entries(porCat).sort((a,b)=>b[1]-a[1]);
-  const html = ordenado.map(([cat,val]) => {
-    const pct = (val/total*100).toFixed(1);
-    const cor = CORES_CAT[cat] || '#a0aec0';
-    const vf = 'R$'+val.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
-    return `<div class="cat-row"><span class="cat-label">● ${cat}</span><span class="cat-valor">${vf}</span><span class="cat-pct">${pct}%</span></div>
-    <div class="cat-bar" style="background:${cor};width:${pct}%;max-width:100%"></div>`;
-  }).join('');
-  document.getElementById('dash-categorias').innerHTML = '<div style="font-size:12px;color:#888;margin-bottom:8px;font-weight:500;text-transform:uppercase;letter-spacing:.04em">Gastos por categoria</div>' + html;
-}
-
-// ============================================================
-// FORNECEDORES
-// ============================================================
-function renderFornecedores() {
-  const props = JSON.parse(localStorage.getItem('forn-frequencias') || '{}');
-  
-  // Agrupar por fornecedor
-  const fornMap = {};
-  registros.forEach(r => {
-    if (!r.forn || r.forn === 'VERIFICAR' || r.forn === 'FORNECEDOR') return;
-    if (!fornMap[r.forn]) fornMap[r.forn] = { nome:r.forn, registros:[], datas:[] };
-    fornMap[r.forn].registros.push(r);
-    if (r.data) fornMap[r.forn].datas.push(r.data);
-  });
-
-  const fornList = Object.values(fornMap).sort((a,b) => {
-    const totA = a.registros.reduce((s,r)=>s+(r.valor||0),0);
-    const totB = b.registros.reduce((s,r)=>s+(r.valor||0),0);
-    return totB - totA;
-  });
-
-  // Alertas
-  const alertas = [];
-  fornList.forEach(f => {
-    const freq = props[f.nome];
-    if (!freq) return;
-    const datas = f.datas.sort().reverse();
-    if (!datas.length) return;
-    const ultimaData = new Date(datas[0]+'T12:00:00');
-    const hoje = new Date();
-    const diasPassados = Math.floor((hoje-ultimaData)/(1000*60*60*24));
-    const diasEsperado = freq === 'semanal' ? 7 : 15;
-    if (diasPassados > diasEsperado + 2) {
-      alertas.push(`⚠️ <strong>${f.nome}</strong> — última nota há ${diasPassados} dias (frequência ${freq})`);
-    }
-  });
-
-  const alertasEl = document.getElementById('dash-alertas');
-  if (alertas.length) {
-    alertasEl.innerHTML = alertas.map(a => `<div class="alerta-item"><i class="ti ti-bell" style="color:#d69e2e;flex-shrink:0"></i><span>${a}</span></div>`).join('');
-  } else {
-    alertasEl.innerHTML = '<div style="font-size:12px;color:#888;margin-bottom:8px">✅ Nenhum alerta de nota atrasada.</div>';
-  }
-
-  // Lista de fornecedores
-  const lista = document.getElementById('forn-lista');
-  if (!fornList.length) { lista.innerHTML = '<div class="empty"><i class="ti ti-truck"></i>Nenhum fornecedor ainda.</div>'; return; }
-
-  lista.innerHTML = fornList.map(f => {
-    const total = f.registros.reduce((s,r)=>s+(r.valor||0),0);
-    const media = total/f.registros.length;
-    const ultimaData = f.datas.sort().reverse()[0];
-    const dt = ultimaData ? new Date(ultimaData+'T12:00:00').toLocaleDateString('pt-BR') : '-';
-    const freq = props[f.nome] ? `<span class="pix-badge">${props[f.nome]}</span>` : '';
-    return `<div class="forn-item">
-      <div class="forn-nome">${f.nome} ${freq}</div>
-      <div class="forn-stats">
-        <div class="forn-stat"><div class="forn-stat-lbl">Total comprado</div><div class="forn-stat-val">R$${total.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}</div></div>
-        <div class="forn-stat"><div class="forn-stat-lbl">Ticket médio</div><div class="forn-stat-val">R$${media.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}</div></div>
-        <div class="forn-stat"><div class="forn-stat-lbl">Última nota</div><div class="forn-stat-val">${dt}</div></div>
-      </div>
-    </div>`;
-  }).join('');
-
-  // Config frequências
-  const configEl = document.getElementById('forn-config');
-  configEl.style.display = 'block';
-  document.getElementById('forn-config-lista').innerHTML = fornList.map(f => `
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-      <span style="flex:1;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${f.nome}</span>
-      <select data-forn="${f.nome}" style="font-size:12px;border:1px solid #e5e5e3;border-radius:8px;padding:6px 10px;font-family:inherit">
-        <option value="">Sem alerta</option>
-        <option value="semanal" ${props[f.nome]==='semanal'?'selected':''}>Semanal</option>
-        <option value="quinzenal" ${props[f.nome]==='quinzenal'?'selected':''}>Quinzenal</option>
-        <option value="mensal" ${props[f.nome]==='mensal'?'selected':''}>Mensal</option>
-      </select>
-    </div>`).join('');
-}
-
-window.salvarFrequencias = function() {
-  const selects = document.querySelectorAll('#forn-config-lista select');
-  const props = {};
-  selects.forEach(s => { if (s.value) props[s.dataset.forn] = s.value; });
-  localStorage.setItem('forn-frequencias', JSON.stringify(props));
-  alert('✅ Configurações salvas!');
-  renderFornecedores();
-};
-
-window.enviarParaContador = async function() {
-  const email = document.getElementById('emailContador').value.trim();
-  if (!email) { alert('Digite o email do contador primeiro.'); return; }
-  localStorage.setItem('emailContador', email);
-  alert('Para enviar ao contador, gere o ZIP e anexe manualmente ao email: ' + email + '
-
-Em breve integraremos o envio automático!');
-};
-
-// Restaurar email do contador
-window.addEventListener('load', function() {
-  const email = localStorage.getItem('emailContador');
-  if (email) document.getElementById('emailContador').value = email;
-});
-
 window.filtro=filtro; window.trocarTab=trocarTab; window.limpar=limpar;
 window.salvar=salvar; window.selecionarPasta=selecionarPasta; window.togglePix=togglePix;
-window.lerComIA=lerComIA; window.renderOFX=renderOFX; window.renderDashboard=renderDashboard;
-window.renderFornecedores=renderFornecedores;
+window.lerComIA=lerComIA; window.renderOFX=renderOFX;
 </script>
 </body>
 </html>
