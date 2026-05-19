@@ -284,7 +284,7 @@ function filtro(tipo) {
   if (idx >= 0) document.querySelectorAll('.sbtn')[idx].classList.add('active');
   const cvs = document.getElementById('cvs');
   const ctx = cvs.getContext('2d');
-  const maxW = 600;
+  const maxW = 1200;
   const sc = Math.min(1, maxW / imgOrig.width);
   cvs.width = imgOrig.width * sc; cvs.height = imgOrig.height * sc;
   ctx.drawImage(imgOrig, 0, 0, cvs.width, cvs.height);
@@ -306,9 +306,9 @@ function getImg() {
     const t = document.createElement('canvas');
     t.width = imgOrig.width; t.height = imgOrig.height;
     t.getContext('2d').drawImage(imgOrig, 0, 0);
-    return t.toDataURL('image/jpeg', 0.3);
+    return t.toDataURL('image/jpeg', 0.85);
   }
-  return document.getElementById('cvs').toDataURL('image/jpeg', 0.3);
+  return document.getElementById('cvs').toDataURL('image/jpeg', 0.85);
 }
 
 function nomeArquivo(r) {
