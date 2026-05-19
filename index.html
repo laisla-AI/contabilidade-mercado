@@ -486,9 +486,12 @@ function trocarTab(id) {
   });
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.getElementById('panel-'+id).classList.add('active');
-  if (id === 'lista' || id === 'exportar' || id === 'banco' || id === 'dashboard' || id === 'fornecedores') carregarRegistros();
-  if (id === 'dashboard') setTimeout(renderDashboard, 500);
-  if (id === 'fornecedores') setTimeout(renderFornecedores, 500);
+  if (id === 'lista' || id === 'exportar' || id === 'banco' || id === 'dashboard' || id === 'fornecedores') {
+    carregarRegistros().then(function() {
+      if (id === 'dashboard') renderDashboard();
+      if (id === 'fornecedores') renderFornecedores();
+    });
+  }
 }
 
 // Upload comprovante recebimento
@@ -691,6 +694,9 @@ async function carregarRegistros() {
   const ll = document.getElementById('loadingLista');
   if (ll) ll.style.display = 'flex';
   try {
+    if (!window._getDocs) {
+      await new Promise(res => setTimeout(res, 1000));
+    }
     if (!window._getDocs) return;
     const q = window._query(window._col, window._orderBy('criadoEm','desc'));
     const snap = await window._getDocs(q);
@@ -742,10 +748,13 @@ function inicializarFiltros() {
 }
 
 function registrosFiltrados() {
-  const ano = document.getElementById('filtroAno')?.value || '';
-  const mes = document.getElementById('filtroMes')?.value || '';
+  const anoEl = document.getElementById('filtroAno');
+  const mesEl = document.getElementById('filtroMes');
+  const ano = anoEl ? anoEl.value : '';
+  const mes = mesEl ? mesEl.value : '';
+  if (!ano && !mes) return registros;
   return registros.filter(r => {
-    if (!r.data) return false;
+    if (!r.data) return true;
     if (ano && !r.data.startsWith(ano)) return false;
     if (mes && r.data.slice(5,7) !== mes) return false;
     return true;
@@ -762,7 +771,11 @@ function renderLista() {
     if(rw)rw.style.display='none'; if(sh)sh.style.display='none'; return;
   }
 
-  inicializarFiltros();
+  // Só inicializa filtros se os selects existirem
+  const selMes = document.getElementById('filtroMes');
+  const selAno = document.getElementById('filtroAno');
+  if (selMes && selAno) inicializarFiltros();
+  
   const filtrados = registrosFiltrados();
 
   if(!filtrados.length) {
@@ -787,7 +800,7 @@ function renderLista() {
     const pasta = PASTAS[r.pasta||'01'];
     const emailBadge = r.origem === 'email' ? `<span class="pix-badge" style="background:#f0faf4;color:#276749;border-color:#9ae6b4">📧 Email</span>` : '';
     const thumb = r.foto
-      ? `<img src="${r.foto}" class="reg-thumb" onclick="abrirModal('${r.id}')" alt="comprovante">`
+      ? `<img src="${r.foto}" class="reg-thumb" onclick="abrirModal('${r.id}')" alt="comprovante" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`+`<div class="reg-ph" style="display:none"><i class="ti ti-photo-off"></i></div>`
       : `<div class="reg-ph"><i class="${r.origem==='email'?'ti ti-mail':'ti ti-photo-off'}"></i></div>`;
     const pixBadge = r.fotoPix ? `<span class="pix-badge">PIX</span>` : '';
     return `<div class="reg-item">${thumb}<div class="reg-info">
@@ -1196,9 +1209,9 @@ function renderDashboard() {
   // Inicializar selects
   const anos = [...new Set(registros.filter(r=>r.data).map(r=>r.data.slice(0,4)))].sort().reverse();
   const selAno = document.getElementById('dash-ano');
-  if (selAno.options.length === 0) {
-    anos.forEach(a => { const o=document.createElement('option'); o.value=a; o.textContent=a; selAno.appendChild(o); });
-  }
+  const anoAtualVal = selAno.value || new Date().getFullYear().toString();
+  selAno.innerHTML = '';
+  anos.forEach(a => { const o=document.createElement('option'); o.value=a; o.textContent=a; if(a===anoAtualVal)o.selected=true; selAno.appendChild(o); });
   const selMes = document.getElementById('dash-mes');
   selMes.innerHTML = '<option value="">Todos os meses</option>';
   const mesesDisp = [...new Set(registros.filter(r=>r.data&&r.data.startsWith(ano)).map(r=>r.data.slice(5,7)))].sort();
