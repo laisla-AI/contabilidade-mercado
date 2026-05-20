@@ -443,17 +443,8 @@ async function uploadCloud(dataUrl, nome) {
 }
 
 function nomeArq(r) {
-  // Pegar data do registro — pode vir como string ou Timestamp do Firebase
-  let dataStr = r.data || '';
-  if (!dataStr && r.criadoEm) dataStr = r.criadoEm.slice(0,10);
-  if (!dataStr) dataStr = new Date().toISOString().slice(0,10);
-  
-  const d = new Date(dataStr + 'T12:00:00');
-  const aa = String(d.getFullYear()).slice(2);
-  const mm = String(d.getMonth()+1).padStart(2,'0');
-  const dd = String(d.getDate()).padStart(2,'0');
-  const n = String(r.num||1).padStart(3,'0');
-  return `${aa}.${mm}.${dd} - ${n} - ${(r.forn||'').trim()}`;
+  const n = String(r.num||1).padStart(2,'0');
+  return `${n} - ${(r.forn||'').trim()}`;
 }
 
 function parseValor(v) {
