@@ -10,7 +10,9 @@
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f3;color:#1a1a1a;min-height:100vh}
 .header{background:#1a1a1a;color:#fff;padding:14px 20px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:50}
 .header h1{font-size:16px;font-weight:500}
-.header .badge-plano{font-size:11px;background:#2a2a2a;border:1px solid #3a3a3a;border-radius:99px;padding:3px 10px;color:#aaa;margin-left:auto}
+.badge-plano{font-size:11px;background:#2a2a2a;border:1px solid #3a3a3a;border-radius:99px;padding:3px 10px;color:#aaa;margin-left:auto}
+.dot{width:8px;height:8px;border-radius:50%;margin-left:8px;flex-shrink:0}
+.dot-on{background:#48bb78}.dot-off{background:#fc8181}
 .tabs{display:flex;background:#fff;border-bottom:1px solid #e5e5e3;position:sticky;top:49px;z-index:40}
 .tab{flex:1;padding:12px 8px;font-size:13px;border:none;background:none;cursor:pointer;color:#888;border-bottom:2px solid transparent;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:5px}
 .tab.active{color:#1a1a1a;border-bottom-color:#1a1a1a;font-weight:500}
@@ -24,29 +26,26 @@ label{font-size:11px;color:#666;font-weight:500;text-transform:uppercase;letter-
 input,select,textarea{font-size:14px;border:1px solid #e5e5e3;border-radius:8px;padding:9px 12px;width:100%;font-family:inherit;background:#fff;color:#1a1a1a;outline:none}
 input:focus,select:focus,textarea:focus{border-color:#1a1a1a}
 textarea{resize:vertical;min-height:52px}
-
-/* Pasta selector */
 .pasta-sel{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:4px}
 .pasta-btn{font-size:12px;padding:6px 12px;border-radius:8px;border:1px solid #ddd;background:#fff;cursor:pointer;color:#555;font-family:inherit;display:flex;align-items:center;gap:5px;transition:all .15s}
 .pasta-btn.active{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
-.pasta-btn i{font-size:14px}
-
-/* Upload */
 .upload-zone{border:1.5px dashed #ccc;border-radius:8px;padding:16px;text-align:center;cursor:pointer;position:relative;transition:background .15s;background:#fff}
 .upload-zone:hover{background:#f9f9f7}
 .upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
 .ulbl{font-size:13px;color:#888}
 .ulbl i{font-size:22px;display:block;margin-bottom:3px;color:#bbb}
 .cvs-wrap{margin-top:8px;display:none}
-.cvs-wrap canvas{width:100%;border-radius:8px;border:1px solid #e5e5e3;max-height:200px;object-fit:contain}
+.cvs-wrap canvas{width:100%;border-radius:8px;border:1px solid #e5e5e3}
 .scan-btns{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
 .sbtn{font-size:11px;padding:5px 10px;border-radius:8px;border:1px solid #ddd;background:#fff;cursor:pointer;color:#333;display:flex;align-items:center;gap:3px;font-family:inherit}
 .sbtn.active{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
-
-/* Upload PIX */
+.btn-ia{width:100%;margin-top:8px;padding:10px;border-radius:8px;border:1.5px solid #6c47ff;background:#f5f0ff;color:#6c47ff;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px}
+.btn-ia:hover{background:#ede9ff}
+.btn-ia:disabled{opacity:.5;cursor:not-allowed}
+.ia-status{display:flex;align-items:center;gap:8px;font-size:12px;color:#6c47ff;margin-top:6px;padding:8px 10px;background:#f5f0ff;border-radius:8px}
+.ia-sugestao{background:#f5f0ff;border:1px solid #d6bcfa;border-radius:8px;padding:10px 12px;margin-top:8px;font-size:12px;color:#553c9a}
 .pix-wrap{margin-top:10px;display:none}
 .pix-preview{width:100%;max-height:150px;object-fit:contain;border-radius:8px;border:1px solid #e5e5e3;margin-top:6px;display:none}
-
 .btn-row{display:flex;gap:8px;margin-top:12px}
 .btn-p{background:#1a1a1a;color:#fff;border:none;border-radius:8px;padding:11px 20px;font-size:14px;font-weight:500;cursor:pointer;flex:1;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px}
 .btn-p:disabled{opacity:.5;cursor:not-allowed}
@@ -54,13 +53,13 @@ textarea{resize:vertical;min-height:52px}
 .resumo{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
 .rcard{background:#f5f5f3;border-radius:8px;padding:10px 12px}
 .rlbl{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.04em}
-.rval{font-size:20px;font-weight:500;color:#1a1a1a;margin-top:2px}
+.rval{font-size:18px;font-weight:500;color:#1a1a1a;margin-top:2px}
 .reg-item{background:#fff;border:1px solid #e5e5e3;border-radius:8px;padding:10px 12px;margin-bottom:8px;display:flex;align-items:center;gap:10px}
 .reg-thumb{width:44px;height:44px;border-radius:8px;object-fit:cover;border:1px solid #e5e5e3;flex-shrink:0;cursor:pointer}
 .reg-ph{width:44px;height:44px;border-radius:8px;background:#f5f5f3;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#bbb;font-size:18px}
 .reg-info{flex:1;min-width:0}
 .reg-nome{font-size:13px;font-weight:500;color:#1a1a1a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.reg-meta{font-size:11px;color:#888;margin-top:2px}
+.reg-meta{font-size:11px;color:#888;margin-top:1px}
 .reg-pasta{font-size:10px;color:#aaa;margin-top:1px}
 .reg-val{font-size:14px;font-weight:500;color:#1a1a1a;white-space:nowrap;text-align:right}
 .reg-pgto{font-size:11px;color:#aaa;text-align:right;margin-top:1px}
@@ -69,9 +68,9 @@ textarea{resize:vertical;min-height:52px}
 .empty{text-align:center;padding:2.5rem;color:#aaa;font-size:13px}
 .empty i{font-size:32px;display:block;margin-bottom:8px}
 .alert{border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:12px;display:none;align-items:center;gap:8px}
-.alert.success{background:#f0faf4;color:#276749;display:flex}
-.alert.error{background:#fff5f5;color:#c53030;display:flex}
-.sec-hd{font-size:14px;font-weight:500;margin:12px 0 8px;color:#1a1a1a;display:flex;justify-content:space-between;align-items:center}
+.alert.success{background:#f0faf4;color:#276749}
+.alert.error{background:#fff5f5;color:#c53030}
+.sec-hd{font-size:14px;font-weight:500;margin:8px 0;color:#1a1a1a;display:flex;justify-content:space-between;align-items:center}
 .badge{font-size:11px;background:#f5f5f3;border:1px solid #e5e5e3;border-radius:99px;padding:2px 9px;color:#888}
 .periodo-row{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:12px}
 .periodo-row .fg{flex:1;min-width:110px}
@@ -89,38 +88,12 @@ textarea{resize:vertical;min-height:52px}
 .modal-close{position:absolute;top:10px;right:10px;background:#f5f5f3;border:none;cursor:pointer;font-size:16px;color:#666;border-radius:6px;padding:4px 8px}
 .spinner{display:inline-block;width:16px;height:16px;border:2px solid #fff;border-top-color:transparent;border-radius:50%;animation:spin .6s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.online-dot{width:8px;height:8px;border-radius:50%;background:#48bb78;margin-left:8px;flex-shrink:0}
-.btn-ia{width:100%;margin-top:8px;padding:10px;border-radius:8px;border:1.5px solid #6c47ff;background:#f5f0ff;color:#6c47ff;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .15s}
-.btn-ia:hover{background:#ede9ff}
-.btn-ia:disabled{opacity:.5;cursor:not-allowed}
-.ia-status{display:flex;align-items:center;gap:8px;font-size:12px;color:#6c47ff;margin-top:6px;padding:8px 10px;background:#f5f0ff;border-radius:8px}
-.ia-sugestao{background:#f5f0ff;border:1px solid #d6bcfa;border-radius:8px;padding:10px 12px;margin-top:8px;font-size:12px;color:#553c9a}
-.ia-sugestao strong{display:block;margin-bottom:4px;color:#6c47ff;font-size:11px;text-transform:uppercase;letter-spacing:.04em}
-.offline-dot{width:8px;height:8px;border-radius:50%;background:#fc8181;margin-left:8px;flex-shrink:0}
 .pix-badge{display:inline-block;font-size:10px;background:#ebf8ff;color:#2b6cb0;border:1px solid #bee3f8;border-radius:99px;padding:1px 7px;margin-left:5px;vertical-align:middle}
+.email-badge{display:inline-block;font-size:10px;background:#f0faf4;color:#276749;border:1px solid #9ae6b4;border-radius:99px;padding:1px 7px;margin-left:5px;vertical-align:middle}
 .divider{height:1px;background:#f0f0ee;margin:12px 0}
 .section-lbl{font-size:11px;color:#888;font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
-.ofx-item{background:#fff;border:1px solid #e5e5e3;border-radius:8px;padding:10px 12px;margin-bottom:6px;display:flex;align-items:center;gap:10px}
-.ofx-entrada{border-left:3px solid #48bb78}
-.ofx-saida{border-left:3px solid #fc8181}
-.ofx-val-pos{font-size:14px;font-weight:500;color:#276749;white-space:nowrap}
-.ofx-val-neg{font-size:14px;font-weight:500;color:#c53030;white-space:nowrap}
-.ofx-desc{font-size:13px;font-weight:500;color:#1a1a1a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ofx-meta{font-size:11px;color:#888;margin-top:1px}
-.ofx-match{font-size:10px;background:#f0faf4;color:#276749;border:1px solid #9ae6b4;border-radius:99px;padding:1px 7px;margin-left:4px}
-.ofx-semcomp{font-size:10px;background:#fff5f5;color:#c53030;border:1px solid #feb2b2;border-radius:99px;padding:1px 7px;margin-left:4px}
-.cat-bar{height:8px;border-radius:99px;margin-top:3px;margin-bottom:8px}
-.cat-row{display:flex;align-items:center;justify-content:space-between;font-size:13px;margin-bottom:2px}
-.cat-label{color:#555;flex:1}
-.cat-valor{font-weight:500;color:#1a1a1a;white-space:nowrap;margin-left:8px}
-.cat-pct{font-size:11px;color:#888;margin-left:6px;white-space:nowrap}
-.forn-item{background:#fff;border:1px solid #e5e5e3;border-radius:8px;padding:12px 14px;margin-bottom:8px}
-.forn-nome{font-size:14px;font-weight:500;color:#1a1a1a}
-.forn-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
-.forn-stat{background:#f9f9f7;border-radius:6px;padding:6px 8px}
-.forn-stat-lbl{font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.04em}
-.forn-stat-val{font-size:13px;font-weight:500;color:#1a1a1a;margin-top:1px}
-.alerta-item{background:#fff8e1;border:1px solid #f6e05e;border-radius:8px;padding:10px 12px;margin-bottom:8px;font-size:13px;display:flex;align-items:center;gap:8px}
+.filtro-mes{display:flex;gap:6px;margin-bottom:10px}
+.filtro-mes select{flex:1;font-size:13px;border:1px solid #e5e5e3;border-radius:8px;padding:8px 12px;background:#fff;font-family:inherit}
 </style>
 </head>
 <body>
@@ -129,7 +102,7 @@ textarea{resize:vertical;min-height:52px}
   <i class="ti ti-receipt" style="font-size:20px"></i>
   <h1>Contabilidade — Mercado</h1>
   <span class="badge-plano">Spark gratuito</span>
-  <div id="statusDot" class="offline-dot" title="Conectando..."></div>
+  <div id="statusDot" class="dot dot-off" title="Conectando..."></div>
 </div>
 
 <div class="tabs">
@@ -138,68 +111,43 @@ textarea{resize:vertical;min-height:52px}
   <button class="tab" onclick="trocarTab('exportar')"><i class="ti ti-download"></i>Exportar</button>
 </div>
 
-<!-- PAINEL REGISTRO -->
+<!-- NOVO REGISTRO -->
 <div class="panel active" id="panel-registro">
-  <div class="alert success" id="ok"><i class="ti ti-check"></i> Registro salvo na nuvem!</div>
-  <div class="alert error" id="err"><i class="ti ti-alert-circle"></i> <span id="errMsg">Erro ao salvar.</span></div>
-
+  <div class="alert success" id="ok"><i class="ti ti-check"></i> Salvo na nuvem!</div>
+  <div class="alert error" id="err"><i class="ti ti-alert-circle"></i> <span id="errMsg">Erro.</span></div>
   <div class="card">
-    <!-- PASTA DESTINO -->
     <div class="fg full" style="margin-bottom:12px">
       <label>📁 Pasta de destino</label>
-      <div class="pasta-sel" id="pastasSel">
-        <button class="pasta-btn active" data-pasta="01" onclick="selecionarPasta(this)">
-          <i class="ti ti-receipt-2"></i>01 - FISCAL
-        </button>
-        <button class="pasta-btn" data-pasta="02" onclick="selecionarPasta(this)">
-          <i class="ti ti-building-bank"></i>02 - BANCO
-        </button>
-        <button class="pasta-btn" data-pasta="03" onclick="selecionarPasta(this)">
-          <i class="ti ti-users"></i>03 - FUNCIONÁRIOS
-        </button>
+      <div class="pasta-sel">
+        <button class="pasta-btn active" data-pasta="01" onclick="selecionarPasta(this)"><i class="ti ti-receipt-2"></i>01 - FISCAL</button>
+        <button class="pasta-btn" data-pasta="02" onclick="selecionarPasta(this)"><i class="ti ti-building-bank"></i>02 - BANCO</button>
+        <button class="pasta-btn" data-pasta="03" onclick="selecionarPasta(this)"><i class="ti ti-users"></i>03 - FUNCIONÁRIOS</button>
       </div>
-      <div id="subpastaLabel" style="font-size:11px;color:#aaa;margin-top:3px">
-        📂 01 - FISCAL / Comprovantes de Fornecedores
-      </div>
+      <div id="subpastaLabel" style="font-size:11px;color:#aaa;margin-top:3px">📂 01 - FISCAL / Comprovantes de Fornecedores</div>
     </div>
-
     <div class="divider"></div>
-
     <div class="grid2" style="margin-top:12px">
       <div class="fg"><label>Data</label><input type="date" id="i-data"></div>
       <div class="fg"><label>Valor (R$)</label><input type="text" id="i-valor" placeholder="0,00" inputmode="decimal"></div>
-      <div class="fg full"><label>Fornecedor / Descrição</label><input type="text" id="i-forn" placeholder="Ex: JM CIGARROS, JOÃO BANANA..." oninput="this.value=this.value.toUpperCase()"></div>
+      <div class="fg full"><label>Fornecedor</label><input type="text" id="i-forn" placeholder="Ex: JM CIGARROS..." oninput="this.value=this.value.toUpperCase()"></div>
       <div class="fg">
         <label>Categoria</label>
         <select id="i-cat">
           <option value="">Selecione...</option>
-          <option>Açougue</option>
-          <option>Acessórios</option>
-          <option>Bebidas</option>
-          <option>Cigarro</option>
-          <option>Despesa operacional</option>
-          <option>Doces</option>
-          <option>Frios e laticínios</option>
-          <option>Hortifruti</option>
-          <option>Limpeza</option>
-          <option>Manutenção</option>
-          <option>Mercadoria geral</option>
-          <option>Mercearia</option>
-          <option>Padaria / pão</option>
-          <option>Outro</option>
+          <option>Açougue</option><option>Acessórios</option><option>Bebidas</option>
+          <option>Cigarro</option><option>Despesa operacional</option><option>Doces</option>
+          <option>Frios e laticínios</option><option>Hortifruti</option><option>Limpeza</option>
+          <option>Manutenção</option><option>Mercadoria geral</option><option>Mercearia</option>
+          <option>Padaria / pão</option><option>Outro</option>
         </select>
       </div>
       <div class="fg">
-        <label>Forma de pagamento</label>
+        <label>Pagamento</label>
         <select id="i-pgto" onchange="togglePix()">
           <option value="">Selecione...</option>
-          <option>Dinheiro</option>
-          <option>PIX</option>
-          <option>Cartão</option>
+          <option>Dinheiro</option><option>PIX</option><option>Cartão</option>
         </select>
       </div>
-
-      <!-- COMPROVANTE DE RECEBIMENTO -->
       <div class="fg full">
         <div class="section-lbl">🧾 Comprovante de recebimento</div>
         <div class="upload-zone">
@@ -209,31 +157,26 @@ textarea{resize:vertical;min-height:52px}
         <div class="cvs-wrap" id="cvsWrap">
           <canvas id="cvs"></canvas>
           <div class="scan-btns">
-            <button class="sbtn active" onclick="filtro('original')"><i class="ti ti-photo"></i>Original</button>
-            <button class="sbtn" onclick="filtro('scanner')"><i class="ti ti-scan"></i>Scanner P&B</button>
-            <button class="sbtn" onclick="filtro('contraste')"><i class="ti ti-adjustments-contrast"></i>Contraste</button>
+            <button class="sbtn active" onclick="aplicarFiltro('original')"><i class="ti ti-photo"></i>Original</button>
+            <button class="sbtn" onclick="aplicarFiltro('scanner')"><i class="ti ti-scan"></i>Scanner P&B</button>
+            <button class="sbtn" onclick="aplicarFiltro('contraste')"><i class="ti ti-adjustments-contrast"></i>Contraste</button>
           </div>
-          <button class="btn-ia" id="btnIA" onclick="lerComIA()">
-            <i class="ti ti-sparkles"></i> Preencher campos automaticamente com IA
-          </button>
+          <button class="btn-ia" id="btnIA" onclick="lerComIA()"><i class="ti ti-sparkles"></i>Preencher com IA</button>
           <div class="ia-status" id="iaStatus" style="display:none">
             <div class="spinner" style="border-color:#6c47ff;border-top-color:transparent"></div>
-            <span id="iaStatusTxt">Lendo comprovante...</span>
+            <span id="iaStatusTxt">Analisando...</span>
           </div>
         </div>
       </div>
-
-      <!-- COMPROVANTE PIX -->
       <div class="fg full pix-wrap" id="pixWrap">
-        <div class="section-lbl">📱 Comprovante de pagamento PIX <span class="pix-badge">PIX</span></div>
+        <div class="section-lbl">📱 Comprovante PIX <span class="pix-badge">PIX</span></div>
         <div class="upload-zone" style="border-color:#bee3f8;background:#f7fbff">
-          <input type="file" id="i-pix" accept="image/*,application/pdf" capture="environment">
-          <div class="ulbl" id="ulblPix"><i class="ti ti-brand-whatsapp" style="color:#2b6cb0"></i>Print/extrato do PIX</div>
+          <input type="file" id="i-pix" accept="image/*" capture="environment">
+          <div class="ulbl" id="ulblPix"><i class="ti ti-brand-whatsapp" style="color:#2b6cb0"></i>Print do PIX</div>
         </div>
-        <img id="pixPreview" class="pix-preview" alt="comprovante pix">
+        <img id="pixPreview" class="pix-preview" alt="pix">
       </div>
-
-      <div class="fg full"><label>Observação (opcional)</label><textarea id="i-obs" placeholder="Detalhes da compra..."></textarea></div>
+      <div class="fg full"><label>Observação</label><textarea id="i-obs" placeholder="Detalhes..."></textarea></div>
     </div>
     <div class="btn-row">
       <button class="btn-s" onclick="limpar()">Limpar</button>
@@ -242,21 +185,23 @@ textarea{resize:vertical;min-height:52px}
   </div>
 </div>
 
-<!-- PAINEL LISTA -->
+<!-- REGISTROS -->
 <div class="panel" id="panel-lista">
   <div class="alert" id="loadingLista" style="background:#f0f4ff;color:#2b4acb;display:none;align-items:center;gap:8px">
     <div class="spinner" style="border-color:#2b4acb;border-top-color:transparent"></div> Carregando...
   </div>
-
-  <!-- Filtro de mês -->
-  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;align-items:center">
-    <select id="filtroMes" onchange="renderLista()" style="flex:1;font-size:13px;border:1px solid #e5e5e3;border-radius:8px;padding:8px 12px;background:#fff;font-family:inherit">
+  <div class="filtro-mes">
+    <select id="filtroAno" onchange="renderLista()"></select>
+    <select id="filtroMes" onchange="renderLista()">
       <option value="">Todos os meses</option>
-    </select>
-    <select id="filtroAno" onchange="atualizarFiltroMes()" style="width:90px;font-size:13px;border:1px solid #e5e5e3;border-radius:8px;padding:8px 12px;background:#fff;font-family:inherit">
+      <option value="01">Janeiro</option><option value="02">Fevereiro</option>
+      <option value="03">Março</option><option value="04">Abril</option>
+      <option value="05">Maio</option><option value="06">Junho</option>
+      <option value="07">Julho</option><option value="08">Agosto</option>
+      <option value="09">Setembro</option><option value="10">Outubro</option>
+      <option value="11">Novembro</option><option value="12">Dezembro</option>
     </select>
   </div>
-
   <div id="resumoWrap" style="display:none">
     <div class="resumo">
       <div class="rcard"><div class="rlbl">Registros</div><div class="rval" id="r-qtd">0</div></div>
@@ -265,12 +210,12 @@ textarea{resize:vertical;min-height:52px}
     </div>
   </div>
   <div class="sec-hd" id="secHd" style="display:none">
-    Registros do período <span class="badge" id="badgeN">0</span>
+    Registros <span class="badge" id="badgeN">0</span>
   </div>
-  <div id="lista"><div class="empty"><i class="ti ti-clipboard-list"></i>Nenhum registro ainda.</div></div>
+  <div id="lista"><div class="empty"><i class="ti ti-clipboard-list"></i>Nenhum registro.</div></div>
 </div>
 
-<!-- PAINEL EXPORTAR -->
+<!-- EXPORTAR -->
 <div class="panel" id="panel-exportar">
   <div class="card">
     <div style="font-size:14px;font-weight:500;margin-bottom:10px"><i class="ti ti-calendar-stats" style="vertical-align:-2px;margin-right:5px"></i>Período</div>
@@ -280,19 +225,13 @@ textarea{resize:vertical;min-height:52px}
     </div>
     <div class="folder-tree">
       <div><i class="ti ti-folder" style="color:#E9A23B;vertical-align:-2px;margin-right:4px"></i><strong>CONTABILIDADE / 2026 / 05 - MAIO</strong></div>
-      <div style="padding-left:14px"><i class="ti ti-folder" style="color:#E9A23B;vertical-align:-2px;margin-right:4px"></i>01 - FISCAL / Comprovantes de Fornecedores → Imagens + Excel</div>
-      <div style="padding-left:14px"><i class="ti ti-folder" style="color:#E9A23B;vertical-align:-2px;margin-right:4px"></i>02 - BANCO / Comprovantes de Pagamento → Imagens + Excel</div>
-      <div style="padding-left:14px"><i class="ti ti-folder" style="color:#E9A23B;vertical-align:-2px;margin-right:4px"></i>03 - FUNCIONÁRIOS → Imagens + Excel</div>
-    </div>
-    <!-- Email do contador -->
-    <div style="margin-bottom:12px">
-      <label style="font-size:11px;color:#666;font-weight:500;text-transform:uppercase;letter-spacing:.04em">Email do contador</label>
-      <input type="email" id="emailContador" placeholder="contador@escritorio.com.br" style="margin-top:4px;font-size:14px;border:1px solid #e5e5e3;border-radius:8px;padding:9px 12px;width:100%;font-family:inherit">
+      <div style="padding-left:14px"><i class="ti ti-folder" style="color:#E9A23B;vertical-align:-2px;margin-right:4px"></i>01 - FISCAL / Comprovantes → Imagens + Excel</div>
+      <div style="padding-left:14px"><i class="ti ti-folder" style="color:#E9A23B;vertical-align:-2px;margin-right:4px"></i>02 - BANCO / Comprovantes → vazia</div>
+      <div style="padding-left:14px"><i class="ti ti-folder" style="color:#E9A23B;vertical-align:-2px;margin-right:4px"></i>03 - FUNCIONÁRIOS → vazia</div>
     </div>
     <div class="exp-row">
       <button class="ebtn" onclick="exportExcel()"><i class="ti ti-file-spreadsheet"></i>Excel</button>
-      <button class="ebtn" onclick="gerarZIP()"><i class="ti ti-file-zip"></i>ZIP completo</button>
-      <button class="ebtn destaque" onclick="enviarParaContador()"><i class="ti ti-mail"></i>Enviar ao contador</button>
+      <button class="ebtn destaque" onclick="gerarZIP()"><i class="ti ti-file-zip"></i>ZIP completo</button>
     </div>
     <div class="progress-wrap" id="progWrap">
       <div class="progress-lbl" id="progLbl">Gerando...</div>
@@ -306,7 +245,7 @@ textarea{resize:vertical;min-height:52px}
     <button class="modal-close" onclick="fecharModal()"><i class="ti ti-x"></i></button>
     <img id="modalImg" src="" alt="comprovante">
     <div id="modalPix" style="display:none;margin-top:8px">
-      <div style="font-size:11px;color:#2b6cb0;font-weight:500;margin-bottom:4px"><i class="ti ti-brand-whatsapp"></i> Comprovante PIX</div>
+      <div style="font-size:11px;color:#2b6cb0;font-weight:500;margin-bottom:4px">Comprovante PIX</div>
       <img id="modalPixImg" src="" alt="pix" style="width:100%;border-radius:8px">
     </div>
   </div>
@@ -314,70 +253,73 @@ textarea{resize:vertical;min-height:52px}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, orderBy, query } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-const firebaseConfig = {
-  apiKey: "AIzaSyCe8afoWcPioKVO3StO9sKnxk7fuiQOVvA",
-  authDomain: "contabilidade-mercado.firebaseapp.com",
-  projectId: "contabilidade-mercado",
-  storageBucket: "contabilidade-mercado.firebasestorage.app",
-  messagingSenderId: "1077955456911",
-  appId: "1:1077955456911:web:304ddcd4696a3f1168e5fa"
+const cfg = {
+  apiKey:"AIzaSyCe8afoWcPioKVO3StO9sKnxk7fuiQOVvA",
+  authDomain:"contabilidade-mercado.firebaseapp.com",
+  projectId:"contabilidade-mercado",
+  storageBucket:"contabilidade-mercado.firebasestorage.app",
+  messagingSenderId:"1077955456911",
+  appId:"1:1077955456911:web:304ddcd4696a3f1168e5fa"
 };
-const app = initializeApp(firebaseConfig);
+const app = initializeApp(cfg);
 const db = getFirestore(app);
 window._db = db;
-window._col = collection(db, 'compras');
+window._col = collection(db,'compras');
 window._addDoc = addDoc;
 window._getDocs = getDocs;
 window._deleteDoc = deleteDoc;
 window._doc = doc;
 window._query = query;
 window._orderBy = orderBy;
-document.getElementById('statusDot').className = 'online-dot';
-document.getElementById('statusDot').title = 'Conectado ao Firebase';
-setTimeout(async () => {
-  try {
-    const q = query(collection(db,'compras'), orderBy('criadoEm','desc'));
-    const snap = await getDocs(q);
-    window._registrosCache = snap.docs.map(d => ({id:d.id,...d.data()}));
-  } catch(e) { console.error(e); }
-}, 600);
+document.getElementById('statusDot').className = 'dot dot-on';
+document.getElementById('statusDot').title = 'Conectado';
 </script>
 
 <script>
 const MESES = ['JANEIRO','FEVEREIRO','MARÇO','ABRIL','MAIO','JUNHO','JULHO','AGOSTO','SETEMBRO','OUTUBRO','NOVEMBRO','DEZEMBRO'];
-const CLOUDINARY_CLOUD = 'dtewhnolw';
-const CLOUDINARY_PRESET = 'comprovantes';
+const CLOUD = 'dtewhnolw';
+const PRESET = 'comprovantes';
+const WORKER = 'https://ocr-contabilidade.laislagomesds29.workers.dev';
+const PASTAS = {
+  '01':{label:'01 - FISCAL / Comprovantes de Fornecedores',path:'01 - FISCAL (Vendas e Compras)/Comprovantes de Fornecedores'},
+  '02':{label:'02 - BANCO / Comprovantes de Pagamento',path:'02 - BANCO (Extratos e Boletos)/Comprovantes de Pagamento'},
+  '03':{label:'03 - FUNCIONÁRIOS',path:'03 - FUNCIONÁRIOS (RH)'}
+};
+
 let registros = [];
 let imgOrig = null;
 let imgPixOrig = null;
 let filtroAtivo = 'original';
-let contador = 1;
 let pastaAtiva = '01';
+let contador = 1;
 
-const PASTAS = {
-  '01': { label:'01 - FISCAL / Comprovantes de Fornecedores', path:'01 - FISCAL (Vendas e Compras)/Comprovantes de Fornecedores' },
-  '02': { label:'02 - BANCO / Comprovantes de Pagamento', path:'02 - BANCO (Extratos e Boletos)/Comprovantes de Pagamento' },
-  '03': { label:'03 - FUNCIONÁRIOS', path:'03 - FUNCIONÁRIOS (RH)' }
-};
-
+// Init
 document.getElementById('i-data').valueAsDate = new Date();
 const hoje = new Date();
 document.getElementById('p-de').valueAsDate = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
 document.getElementById('p-ate').valueAsDate = hoje;
 
-// Máscara de valor automática
+// Máscara valor
 document.getElementById('i-valor').addEventListener('input', function() {
   let v = this.value.replace(/\D/g,'');
   if (!v) { this.value=''; return; }
-  v = (parseInt(v)/100).toFixed(2);
-  this.value = v.replace('.',',');
+  this.value = (parseInt(v)/100).toFixed(2).replace('.',',');
 });
-document.getElementById('i-valor').addEventListener('keydown', function(e) {
-  if (e.key === '.' || e.key === ',') { e.preventDefault(); }
-});
+
+// Carregar ao iniciar
+setTimeout(carregarRegistros, 1000);
+
+function trocarTab(id) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  if (id === 'lista' || id === 'exportar') carregarRegistros();
+}
 
 function selecionarPasta(btn) {
   document.querySelectorAll('.pasta-btn').forEach(b => b.classList.remove('active'));
@@ -387,63 +329,58 @@ function selecionarPasta(btn) {
 }
 
 function togglePix() {
-  const pgto = document.getElementById('i-pgto').value;
-  const wrap = document.getElementById('pixWrap');
-  wrap.style.display = pgto === 'PIX' ? 'block' : 'none';
+  document.getElementById('pixWrap').style.display = document.getElementById('i-pgto').value === 'PIX' ? 'block' : 'none';
 }
 
-window.addEventListener('load', function() {
-  setTimeout(function() {
-    if (window._getDocs) carregarRegistros();
-    else setTimeout(carregarRegistros, 1500);
-  }, 800);
-});
-
-function trocarTab(id) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  const tabAtiva = document.querySelector(\`.tab[onclick="trocarTab('${id}')"]\`);
-  if (tabAtiva) tabAtiva.classList.add('active');
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  const panel = document.getElementById('panel-'+id);
-  if (panel) panel.classList.add('active');
-  if (id === 'lista' || id === 'exportar' || id === 'banco') carregarRegistros();
-}
-
-// Upload comprovante recebimento
+// Upload foto recibo
 document.getElementById('i-foto').addEventListener('change', function() {
   const file = this.files[0]; if (!file) return;
   const reader = new FileReader();
-  reader.onload = e => {
+  reader.onload = function(e) {
     const img = new Image();
-    img.onload = () => {
+    img.onload = function() {
       imgOrig = img;
-      document.getElementById('cvsWrap').style.display = 'block';
-      document.getElementById('ulbl').style.display = 'none';
+      // Mostrar canvas e esconder label
+      const cvsWrap = document.getElementById('cvsWrap');
+      const ulbl = document.getElementById('ulbl');
+      cvsWrap.style.display = 'block';
+      ulbl.style.display = 'none';
       filtroAtivo = 'original';
-      document.querySelectorAll('.sbtn').forEach(b => b.classList.remove('active'));
+      // Ativar botão original
+      document.querySelectorAll('.sbtn').forEach(function(b) { b.classList.remove('active'); });
       document.querySelectorAll('.sbtn')[0].classList.add('active');
-      filtro('original');
+      // Desenhar imagem no canvas
+      const cvs = document.getElementById('cvs');
+      const ctx = cvs.getContext('2d');
+      const maxW = 1600;
+      const w = img.naturalWidth || img.width;
+      const h = img.naturalHeight || img.height;
+      const sc = Math.min(1, maxW/w);
+      cvs.width = Math.round(w*sc);
+      cvs.height = Math.round(h*sc);
+      ctx.drawImage(img, 0, 0, cvs.width, cvs.height);
     };
+    img.onerror = function() { alert('Erro ao carregar imagem. Tente novamente.'); };
     img.src = e.target.result;
   };
+  reader.onerror = function() { alert('Erro ao ler arquivo.'); };
   reader.readAsDataURL(file);
 });
 
-// Upload comprovante PIX
+// Upload PIX
 document.getElementById('i-pix').addEventListener('change', function() {
   const file = this.files[0]; if (!file) return;
   const reader = new FileReader();
   reader.onload = e => {
     imgPixOrig = e.target.result;
-    const prev = document.getElementById('pixPreview');
-    prev.src = e.target.result;
-    prev.style.display = 'block';
+    const p = document.getElementById('pixPreview');
+    p.src = e.target.result; p.style.display = 'block';
     document.getElementById('ulblPix').style.display = 'none';
   };
   reader.readAsDataURL(file);
 });
 
-function filtro(tipo) {
+function aplicarFiltro(tipo) {
   if (!imgOrig) return;
   filtroAtivo = tipo;
   document.querySelectorAll('.sbtn').forEach(b => b.classList.remove('active'));
@@ -493,91 +430,70 @@ function getImg() {
   return t.toDataURL('image/jpeg',0.88);
 }
 
-async function uploadCloudinary(dataUrl, filename) {
+async function uploadCloud(dataUrl, nome) {
   if (!dataUrl) return null;
   const blob = await (await fetch(dataUrl)).blob();
   const fd = new FormData();
-  fd.append('file', blob, filename+'.jpg');
-  fd.append('upload_preset', CLOUDINARY_PRESET);
+  fd.append('file', blob, nome+'.jpg');
+  fd.append('upload_preset', PRESET);
   fd.append('folder', 'comprovantes');
-  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, {
-    method:'POST', body:fd
-  });
+  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD}/image/upload`, {method:'POST',body:fd});
   if (!res.ok) throw new Error('Erro no upload da imagem');
   return (await res.json()).secure_url;
 }
 
-function nomeArquivo(r) {
+function nomeArq(r) {
   const d = new Date(r.data+'T12:00:00');
   const aa = String(d.getFullYear()).slice(2);
   const mm = String(d.getMonth()+1).padStart(2,'0');
   const dd = String(d.getDate()).padStart(2,'0');
-  const num = String(r.num||1).padStart(3,'0');
-  const forn = (r.forn||'').trim();
-  return `${aa}.${mm}.${dd} - ${num} - ${forn}`;
-}
-
-function nomeArquivoPix(r) {
-  return nomeArquivo(r) + ' - C01';
+  const n = String(r.num||1).padStart(3,'0');
+  return `${aa}.${mm}.${dd} - ${n} - ${(r.forn||'').trim()}`;
 }
 
 function parseValor(v) {
-  if (!v) return 0;
-  return parseFloat(String(v).replace(/\./g,'').replace(',','.')) || 0;
+  return parseFloat(String(v||'').replace(/\./g,'').replace(',','.')) || 0;
 }
 
 async function salvar() {
   const data = document.getElementById('i-data').value;
-  const valorStr = document.getElementById('i-valor').value;
-  const valor = parseValor(valorStr);
+  const valor = parseValor(document.getElementById('i-valor').value);
   const forn = document.getElementById('i-forn').value.trim();
   const pgto = document.getElementById('i-pgto').value;
-  if (!data || !forn || valor <= 0 || !pgto) {
-    alert('Preencha: data, fornecedor, valor e forma de pagamento.'); return;
-  }
+  if (!data||!forn||valor<=0||!pgto) { alert('Preencha: data, fornecedor, valor e pagamento.'); return; }
+
   const btn = document.getElementById('btnSalvar');
   btn.disabled = true;
   document.getElementById('ok').style.display = 'none';
   document.getElementById('err').style.display = 'none';
 
   try {
-    let tentativas = 0;
-    while (!window._addDoc && tentativas < 8) {
-      await new Promise(res => setTimeout(res, 300));
-      tentativas++;
-    }
-    if (!window._addDoc) throw new Error('Firebase não conectou. Recarregue a página.');
+    let tent = 0;
+    while (!window._addDoc && tent < 10) { await new Promise(r=>setTimeout(r,300)); tent++; }
+    if (!window._addDoc) throw new Error('Firebase não conectou.');
 
-    const imgLocal = getImg();
-    let fotoUrl = null;
-    let pixUrl = null;
     const num = contador++;
-    const nome = nomeArquivo({data, num, forn});
-
-    if (imgLocal) {
-      btn.innerHTML = '<div class="spinner"></div> Enviando recibo...';
-      fotoUrl = await uploadCloudinary(imgLocal, nome);
+    const nome = nomeArq({data,num,forn});
+    btn.innerHTML = '<div class="spinner"></div> Enviando recibo...';
+    const fotoUrl = await uploadCloud(getImg(), nome);
+    let pixUrl = null;
+    if (imgPixOrig && pgto==='PIX') {
+      btn.innerHTML = '<div class="spinner"></div> Enviando PIX...';
+      pixUrl = await uploadCloud(imgPixOrig, nome+' - C01');
     }
-    if (imgPixOrig && pgto === 'PIX') {
-      btn.innerHTML = '<div class="spinner"></div> Enviando comprovante PIX...';
-      pixUrl = await uploadCloudinary(imgPixOrig, nomeArquivoPix({data, num, forn}));
-    }
-
     btn.innerHTML = '<div class="spinner"></div> Salvando...';
-    const reg = {
+    await window._addDoc(window._col, {
       num, data, valor, forn,
       cat: document.getElementById('i-cat').value,
       pgto, obs: document.getElementById('i-obs').value.trim(),
-      foto: fotoUrl,
-      fotoPix: pixUrl,
-      pasta: pastaAtiva,
+      foto: fotoUrl, fotoPix: pixUrl, xmlUrl: '',
+      pasta: pastaAtiva, origem: 'manual',
       criadoEm: new Date().toISOString()
-    };
-    await window._addDoc(window._col, reg);
+    });
     document.getElementById('ok').style.display = 'flex';
     limpar();
   } catch(e) {
-    document.getElementById('errMsg').textContent = 'Erro: ' + e.message;
+    document.getElementById('errMsg').textContent = 'Erro: '+e.message;
     document.getElementById('err').style.display = 'flex';
   }
   btn.disabled = false;
@@ -585,94 +501,54 @@ async function salvar() {
 }
 
 function limpar() {
-  ['i-forn','i-obs'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('i-valor').value = '';
-  document.getElementById('i-cat').value = '';
-  document.getElementById('i-pgto').value = '';
-  document.getElementById('i-foto').value = '';
-  document.getElementById('i-pix').value = '';
+  ['i-forn','i-obs'].forEach(id => document.getElementById(id).value='');
+  document.getElementById('i-valor').value='';
+  document.getElementById('i-cat').value='';
+  document.getElementById('i-pgto').value='';
+  document.getElementById('i-foto').value='';
+  document.getElementById('i-pix').value='';
   document.getElementById('i-data').valueAsDate = new Date();
-  imgOrig = null; imgPixOrig = null;
-  document.getElementById('cvsWrap').style.display = 'none';
-  document.getElementById('ulbl').style.display = 'block';
-  document.getElementById('pixWrap').style.display = 'none';
-  document.getElementById('pixPreview').style.display = 'none';
-  document.getElementById('ulblPix').style.display = 'block';
-  // Limpar sugestão IA
-  const msgIA = document.querySelector('.ia-sugestao');
-  if (msgIA) msgIA.remove();
-  const btnIA = document.getElementById('btnIA');
-  if (btnIA) btnIA.disabled = false;
+  imgOrig=null; imgPixOrig=null;
+  document.getElementById('cvsWrap').style.display='none';
+  document.getElementById('ulbl').style.display='block';
+  document.getElementById('pixWrap').style.display='none';
+  document.getElementById('pixPreview').style.display='none';
+  document.getElementById('ulblPix').style.display='block';
+  const m = document.querySelector('.ia-sugestao');
+  if (m) m.remove();
 }
 
 async function carregarRegistros() {
   const ll = document.getElementById('loadingLista');
   if (ll) ll.style.display = 'flex';
   try {
-    // Aguardar Firebase até 3 segundos
-    let tentativas = 0;
-    while (!window._getDocs && tentativas < 6) {
-      await new Promise(res => setTimeout(res, 500));
-      tentativas++;
-    }
-    if (!window._getDocs) { console.log('Firebase não disponível'); return; }
-    const q = window._query(window._col, window._orderBy('criadoEm','desc'));
-    const snap = await window._getDocs(q);
+    let tent = 0;
+    while (!window._getDocs && tent < 10) { await new Promise(r=>setTimeout(r,300)); tent++; }
+    if (!window._getDocs) return;
+    const snap = await window._getDocs(window._query(window._col, window._orderBy('criadoEm','desc')));
     registros = snap.docs.map(d => ({id:d.id,...d.data()}));
+    // Inicializar filtro ano
+    const anos = [...new Set(registros.filter(r=>r.data).map(r=>r.data.slice(0,4)))].sort().reverse();
+    const sel = document.getElementById('filtroAno');
+    if (sel) {
+      const cur = sel.value || new Date().getFullYear().toString();
+      sel.innerHTML = anos.map(a=>`<option value="${a}" ${a===cur?'selected':''}>${a}</option>`).join('');
+    }
+    // Selecionar mês atual por padrão
+    const selMes = document.getElementById('filtroMes');
+    if (selMes && !selMes.value) {
+      selMes.value = String(new Date().getMonth()+1).padStart(2,'0');
+    }
     renderLista();
-  } catch(e) { console.error('Erro carregarRegistros:', e); }
+  } catch(e) { console.error(e); }
   if (ll) ll.style.display = 'none';
 }
 
-function atualizarFiltroMes() {
-  const ano = document.getElementById('filtroAno').value;
-  const sel = document.getElementById('filtroMes');
-  const mesAtual = sel.value;
-  sel.innerHTML = '<option value="">Todos os meses</option>';
-  const mesesDisp = [...new Set(registros
-    .filter(r => r.data && r.data.startsWith(ano))
-    .map(r => r.data.slice(5,7))
-  )].sort();
-  mesesDisp.forEach(m => {
-    const nomes = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-    const opt = document.createElement('option');
-    opt.value = m;
-    opt.textContent = nomes[parseInt(m)-1];
-    if (m === mesAtual) opt.selected = true;
-    sel.appendChild(opt);
-  });
-  renderLista();
-}
-
-function inicializarFiltros() {
-  const anos = [...new Set(registros.filter(r=>r.data).map(r=>r.data.slice(0,4)))].sort().reverse();
-  const selAno = document.getElementById('filtroAno');
-  selAno.innerHTML = '';
-  const anoAtual = new Date().getFullYear().toString();
-  anos.forEach(a => {
-    const opt = document.createElement('option');
-    opt.value = a; opt.textContent = a;
-    if (a === anoAtual) opt.selected = true;
-    selAno.appendChild(opt);
-  });
-  // Selecionar mês atual por padrão
-  const mesAtual = String(new Date().getMonth()+1).padStart(2,'0');
-  const sel = document.getElementById('filtroMes');
-  atualizarFiltroMes();
-  // Tentar selecionar mês atual
-  for (let opt of sel.options) {
-    if (opt.value === mesAtual) { opt.selected = true; break; }
-  }
-}
-
-function registrosFiltrados() {
-  const anoEl = document.getElementById('filtroAno');
-  const mesEl = document.getElementById('filtroMes');
-  const ano = anoEl ? anoEl.value : '';
-  const mes = mesEl ? mesEl.value : '';
-  if (!ano && !mes) return registros;
+function getFiltrados() {
+  const ano = (document.getElementById('filtroAno')||{}).value || '';
+  const mes = (document.getElementById('filtroMes')||{}).value || '';
   return registros.filter(r => {
-    if (!r.data) return true;
+    if (!r.data) return !ano && !mes;
     if (ano && !r.data.startsWith(ano)) return false;
     if (mes && r.data.slice(5,7) !== mes) return false;
     return true;
@@ -683,46 +559,39 @@ function renderLista() {
   const lista = document.getElementById('lista');
   const rw = document.getElementById('resumoWrap');
   const sh = document.getElementById('secHd');
-  
+  if (!lista) return;
+
   if (!registros.length) {
     lista.innerHTML = '<div class="empty"><i class="ti ti-clipboard-list"></i>Nenhum registro ainda.</div>';
     if(rw)rw.style.display='none'; if(sh)sh.style.display='none'; return;
   }
 
-  // Só inicializa filtros se os selects existirem
-  const selMes = document.getElementById('filtroMes');
-  const selAno = document.getElementById('filtroAno');
-  if (selMes && selAno) inicializarFiltros();
-  
-  const filtrados = registrosFiltrados();
-
-  if(!filtrados.length) {
-    lista.innerHTML = '<div class="empty"><i class="ti ti-calendar-off"></i>Nenhum registro neste período.</div>';
+  const filtrados = getFiltrados();
+  if (!filtrados.length) {
+    lista.innerHTML = '<div class="empty"><i class="ti ti-calendar-off"></i>Sem registros neste período.</div>';
     if(rw)rw.style.display='none'; if(sh)sh.style.display='none'; return;
   }
 
   if(rw)rw.style.display='block'; if(sh)sh.style.display='flex';
-  const total = filtrados.reduce((s,r) => s+(r.valor||0), 0);
-  // Sem comprovante: só conta se não tem foto E não é via email (email tem PDF no Drive)
-  const sem = filtrados.filter(r => !r.foto && r.origem !== 'email').length;
+  const total = filtrados.reduce((s,r)=>s+(r.valor||0),0);
+  const sem = filtrados.filter(r=>!r.foto&&r.origem!=='email').length;
   document.getElementById('r-qtd').textContent = filtrados.length;
   document.getElementById('r-tot').textContent = 'R$'+total.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
   document.getElementById('r-sem').textContent = sem;
   document.getElementById('badgeN').textContent = filtrados.length+' itens';
-  // Ordenar por data mais recente
-  const ordenados = [...filtrados].sort((a,b) => (b.data||'').localeCompare(a.data||''));
-  
+
+  const ordenados = [...filtrados].sort((a,b)=>(b.data||'').localeCompare(a.data||''));
   lista.innerHTML = ordenados.map(r => {
-    const dt = new Date(r.data+'T12:00:00').toLocaleDateString('pt-BR');
+    const dt = r.data ? new Date(r.data+'T12:00:00').toLocaleDateString('pt-BR') : '';
     const vf = 'R$'+((r.valor||0)).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
     const pasta = PASTAS[r.pasta||'01'];
-    const emailBadge = r.origem === 'email' ? `<span class="pix-badge" style="background:#f0faf4;color:#276749;border-color:#9ae6b4">📧 Email</span>` : '';
+    const pixBadge = r.fotoPix ? '<span class="pix-badge">PIX</span>' : '';
+    const emailBadge = r.origem==='email' ? '<span class="email-badge">📧 Email</span>' : '';
     const thumb = r.foto
-      ? `<img src="${r.foto}" class="reg-thumb" onclick="abrirModal('${r.id}')" alt="comprovante" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`+`<div class="reg-ph" style="display:none"><i class="ti ti-photo-off"></i></div>`
-      : `<div class="reg-ph"><i class="${r.origem==='email'?'ti ti-mail':'ti ti-photo-off'}"></i></div>`;
-    const pixBadge = r.fotoPix ? `<span class="pix-badge">PIX</span>` : '';
+      ? `<img src="${r.foto}" class="reg-thumb" onclick="abrirModal('${r.id}')" alt="comprovante" onerror="this.style.display='none'">`
+      : `<div class="reg-ph"><i class="ti ti-${r.origem==='email'?'mail':'photo-off'}"></i></div>`;
     return `<div class="reg-item">${thumb}<div class="reg-info">
-      <div class="reg-nome">${nomeArquivo(r)}${pixBadge}${emailBadge}</div>
+      <div class="reg-nome">${nomeArq(r)}${pixBadge}${emailBadge}</div>
       <div class="reg-meta">${dt}${r.cat?' · '+r.cat:''}${r.obs?' · '+r.obs:''}</div>
       <div class="reg-pasta">📂 ${pasta?pasta.label:'FISCAL'}</div>
     </div><div>
@@ -734,384 +603,167 @@ function renderLista() {
 }
 
 window.abrirModal = function(id) {
-  const r = registros.find(x => x.id===id);
+  const r = registros.find(x=>x.id===id);
   if (!r) return;
   const mi = document.getElementById('modalImg');
+  mi.src = r.foto||''; mi.style.display = r.foto?'block':'none';
   const mp = document.getElementById('modalPix');
-  const mpi = document.getElementById('modalPixImg');
-  mi.src = r.foto || '';
-  mi.style.display = r.foto ? 'block' : 'none';
-  if (r.fotoPix) {
-    mpi.src = r.fotoPix;
-    mp.style.display = 'block';
-  } else { mp.style.display = 'none'; }
-  document.getElementById('modal').style.display = 'flex';
+  if (r.fotoPix) { document.getElementById('modalPixImg').src=r.fotoPix; mp.style.display='block'; }
+  else mp.style.display='none';
+  document.getElementById('modal').style.display='flex';
 };
 window.fecharModal = function() { document.getElementById('modal').style.display='none'; };
 window.deletar = async function(id) {
   if (!confirm('Excluir este registro?')) return;
-  try {
-    await window._deleteDoc(window._doc(window._db,'compras',id));
-    registros = registros.filter(r => r.id!==id);
-    renderLista();
-  } catch(e) { alert('Erro: '+e.message); }
+  await window._deleteDoc(window._doc(window._db,'compras',id));
+  registros = registros.filter(r=>r.id!==id);
+  renderLista();
 };
 
-function filtrarPeriodo() {
+// IA
+async function lerComIA() {
+  const img = getImg();
+  if (!img) { alert('Adicione uma foto primeiro.'); return; }
+  const btn = document.getElementById('btnIA');
+  const status = document.getElementById('iaStatus');
+  btn.disabled = true; status.style.display = 'flex';
+  document.getElementById('iaStatusTxt').textContent = 'Analisando comprovante...';
+  try {
+    const res = await fetch(WORKER, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({base64: img.split(',')[1], mimeType:'image/jpeg'})
+    });
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+    const jsonMatch = (data.text||'').match(/\{[\s\S]*?\}/);
+    if (!jsonMatch) throw new Error('IA não retornou dados válidos');
+    const r = JSON.parse(jsonMatch[0]);
+    if (r.data) document.getElementById('i-data').value = r.data;
+    if (r.fornecedor) document.getElementById('i-forn').value = r.fornecedor.toUpperCase();
+    if (r.valor) document.getElementById('i-valor').value = parseFloat(r.valor).toFixed(2).replace('.',',');
+    if (r.categoria) {
+      const sel = document.getElementById('i-cat');
+      for (let o of sel.options) if (o.value===r.categoria) { sel.value=r.categoria; break; }
+    }
+    status.style.display = 'none';
+    const msg = document.createElement('div');
+    msg.className = 'ia-sugestao';
+    msg.innerHTML = `<strong>✨ IA preencheu automaticamente</strong><br>
+      ${r.fornecedor?'✅ Fornecedor: '+r.fornecedor+'<br>':''}
+      ${r.valor?'✅ Valor: R$ '+r.valor+'<br>':''}
+      ${r.data?'✅ Data: '+new Date(r.data+'T12:00:00').toLocaleDateString('pt-BR')+'<br>':''}
+      ${r.categoria?'✅ Categoria: '+r.categoria+'<br>':''}
+      <span style="color:#888;font-size:11px">Confira e ajuste se necessário</span>`;
+    const prev = document.querySelector('.ia-sugestao');
+    if (prev) prev.remove();
+    document.getElementById('cvsWrap').appendChild(msg);
+  } catch(e) {
+    status.style.display='none';
+    alert('Erro: '+e.message);
+  }
+  btn.disabled = false;
+}
+
+// EXPORTAR
+async function exportExcel() {
+  await carregarRegistros();
+  const dados = getPeriodo();
+  if (!dados.length) { alert('Nenhum registro no período.'); return; }
+  dados.sort((a,b)=>(a.data||'').localeCompare(b.data||''));
+  const rows = [['Arquivo','Data','Fornecedor','Categoria','Valor (R$)','Pagamento','Observação','Pasta','Link DANFE','Link XML','Link PIX']];
+  dados.forEach(r => {
+    const dt = r.data?new Date(r.data+'T12:00:00').toLocaleDateString('pt-BR'):'';
+    rows.push([nomeArq(r),dt,r.forn,r.cat,r.valor,r.pgto,r.obs,PASTAS[r.pasta||'01']?.label,r.foto||'',r.xmlUrl||'',r.fotoPix||'']);
+  });
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+  dados.forEach((r,i) => {
+    if(r.foto){const c=XLSX.utils.encode_cell({r:i+1,c:8});ws[c]={v:'Abrir DANFE',t:'s',l:{Target:r.foto}};}
+    if(r.xmlUrl){const c=XLSX.utils.encode_cell({r:i+1,c:9});ws[c]={v:'Abrir XML',t:'s',l:{Target:r.xmlUrl}};}
+    if(r.fotoPix){const c=XLSX.utils.encode_cell({r:i+1,c:10});ws[c]={v:'Abrir PIX',t:'s',l:{Target:r.fotoPix}};}
+  });
+  ws['!cols']=[{wch:35},{wch:12},{wch:30},{wch:20},{wch:12},{wch:12},{wch:20},{wch:30},{wch:14},{wch:14},{wch:14}];
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,ws,'Compras');
+  XLSX.writeFile(wb,`Compras_${document.getElementById('p-de').value}_${document.getElementById('p-ate').value}.xlsx`);
+}
+
+function getPeriodo() {
   const de = document.getElementById('p-de').value;
   const ate = document.getElementById('p-ate').value;
   if (!de||!ate) return registros;
-  return registros.filter(r => r.data>=de && r.data<=ate);
+  return registros.filter(r=>r.data>=de&&r.data<=ate);
 }
 
-window.exportExcel = async function() {
+async function gerarZIP() {
   await carregarRegistros();
-  const dados = filtrarPeriodo();
+  const dados = getPeriodo();
   if (!dados.length) { alert('Nenhum registro no período.'); return; }
-  
-  // Ordenar por data cronológica
-  dados.sort((a,b) => (a.data||'').localeCompare(b.data||''));
-  
-  const rows = [['Arquivo','Data','Fornecedor','Categoria','Valor (R$)','Pagamento','Observação','Pasta','Link DANFE','Link XML','Link PIX']];
-  dados.forEach(r => {
-    const dt = new Date(r.data+'T12:00:00').toLocaleDateString('pt-BR');
-    const pasta = PASTAS[r.pasta||'01']?.label||'FISCAL';
-    rows.push([nomeArquivo(r),dt,r.forn,r.cat,r.valor,r.pgto,r.obs,pasta,
-      r.foto||'', r.xmlUrl||'', r.fotoPix||''
-    ]);
-  });
-  const ws = XLSX.utils.aoa_to_sheet(rows);
-  // Links clicáveis nas colunas I, J e K
-  dados.forEach((r,i) => {
-    if (r.foto) {
-      const c = XLSX.utils.encode_cell({r:i+1,c:8});
-      ws[c] = {v:'Abrir DANFE',t:'s',l:{Target:r.foto}};
-    }
-    if (r.xmlUrl) {
-      const c = XLSX.utils.encode_cell({r:i+1,c:9});
-      ws[c] = {v:'Abrir XML',t:'s',l:{Target:r.xmlUrl}};
-    }
-    if (r.fotoPix) {
-      const c = XLSX.utils.encode_cell({r:i+1,c:10});
-      ws[c] = {v:'Abrir PIX',t:'s',l:{Target:r.fotoPix}};
-    }
-  });
-  ws['!cols'] = [{wch:32},{wch:12},{wch:28},{wch:20},{wch:12},{wch:12},{wch:20},{wch:30},{wch:16},{wch:16},{wch:16}];
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb,ws,'Compras');
-  const de = document.getElementById('p-de').value;
-  const ate = document.getElementById('p-ate').value;
-  XLSX.writeFile(wb,`Compras_${de}_${ate}.xlsx`);
-};
-
-window.gerarZIP = async function() {
-  // Sempre recarregar do Firebase para garantir dados mais recentes
-  const pw2 = document.getElementById('progWrap');
-  const pl2 = document.getElementById('progLbl');
-  pw2.style.display='block'; pl2.textContent='Buscando registros atualizados...';
-  await carregarRegistros();
-  const dados = filtrarPeriodo();
-  if (!dados.length) { alert('Nenhum registro no período selecionado.'); return; }
-  const pw = document.getElementById('progWrap');
-  const pf = document.getElementById('progFill');
-  const pl = document.getElementById('progLbl');
+  const pw=document.getElementById('progWrap');
+  const pf=document.getElementById('progFill');
+  const pl=document.getElementById('progLbl');
   pw.style.display='block'; pf.style.width='0%';
-
   const zip = new JSZip();
-  const de = document.getElementById('p-de').value;
-  const ate = document.getElementById('p-ate').value;
-  const d0 = new Date(de+'T12:00:00');
-  const ano = d0.getFullYear();
-  const m = d0.getMonth();
-  const mn = String(m+1).padStart(2,'0');
-  const base = `CONTABILIDADE/${ano}/${mn} - ${MESES[m]}`;
-
-  // Criar todas as pastas
-  Object.values(PASTAS).forEach(p => zip.folder(`${base}/${p.path}`));
+  const de=document.getElementById('p-de').value;
+  const ate=document.getElementById('p-ate').value;
+  const d0=new Date(de+'T12:00:00');
+  const ano=d0.getFullYear(); const m=d0.getMonth();
+  const mn=String(m+1).padStart(2,'0');
+  const base=`CONTABILIDADE/${ano}/${mn} - ${MESES[m]}`;
+  Object.values(PASTAS).forEach(p=>zip.folder(`${base}/${p.path}`));
   zip.folder(`${base}/01 - FISCAL (Vendas e Compras)/XML - Notas de Entrada`);
   zip.folder(`${base}/01 - FISCAL (Vendas e Compras)/XML - Vendas`);
   zip.folder(`${base}/02 - BANCO (Extratos e Boletos)/Extrato PDF e OFX`);
   zip.folder(`${base}/03 - FUNCIONÁRIOS (RH)/Atestados`);
   zip.folder(`${base}/03 - FUNCIONÁRIOS (RH)/Folhas de Ponto`);
   zip.folder(`${base}/03 - FUNCIONÁRIOS (RH)/Holerites Escaneados`);
-
   pl.textContent='Baixando imagens...'; pf.style.width='5%';
-
-  for (let i=0;i<dados.length;i++) {
-    const r = dados[i];
-    const pasta = PASTAS[r.pasta||'01'];
-    const caminho = `${base}/${pasta.path}`;
-
-    pl.textContent = `Baixando ${i+1}/${dados.length}: ${r.forn||''}...`;
-
-    // Comprovante de recebimento
-    if (r.foto) {
-      try {
-        const resp = await fetch(r.foto.startsWith('http') ? r.foto : r.foto);
-        const blob = await resp.blob();
-        const ext = blob.type.includes('png')?'png':'jpg';
-        zip.file(`${caminho}/${nomeArquivo(r)}.${ext}`, blob);
-      } catch(e) { console.error('Erro foto:', e); }
+  const ordenados = [...dados].sort((a,b)=>(a.data||'').localeCompare(b.data||''));
+  for (let i=0;i<ordenados.length;i++) {
+    const r=ordenados[i];
+    const caminho=`${base}/${PASTAS[r.pasta||'01'].path}`;
+    pl.textContent=`Baixando ${i+1}/${ordenados.length}: ${r.forn||''}...`;
+    if (r.foto&&r.foto.startsWith('http')) {
+      try{const b=await(await fetch(r.foto)).blob();zip.file(`${caminho}/${nomeArq(r)}.${b.type.includes('png')?'png':'jpg'}`,b);}catch(e){}
     }
-
-    // Comprovante PIX
-    if (r.fotoPix) {
-      try {
-        const resp = await fetch(r.fotoPix);
-        const blob = await resp.blob();
-        const ext = blob.type.includes('png')?'png':'jpg';
-        zip.file(`${caminho}/${nomeArquivoPix(r)}.${ext}`, blob);
-      } catch(e) { console.error('Erro PIX:', e); }
+    if (r.fotoPix&&r.fotoPix.startsWith('http')) {
+      try{const b=await(await fetch(r.fotoPix)).blob();zip.file(`${caminho}/${nomeArq(r)} - C01.${b.type.includes('png')?'png':'jpg'}`,b);}catch(e){}
     }
-
-    pf.style.width = Math.round(5+(i+1)/dados.length*60)+'%';
-    await new Promise(res => setTimeout(res,30));
+    pf.style.width=Math.round(5+(i+1)/ordenados.length*60)+'%';
+    await new Promise(r=>setTimeout(r,30));
   }
-
   pl.textContent='Gerando Excel...'; pf.style.width='68%';
-  await new Promise(res => setTimeout(res,50));
-
-  // Ordenar por data cronológica
-  dados.sort((a,b) => (a.data||'').localeCompare(b.data||''));
-
-  const wb = XLSX.utils.book_new();
-  const rowsAll = [['Arquivo','Data','Fornecedor','Categoria','Valor (R$)','Pagamento','Observação','Pasta','Link DANFE','Link XML','Link PIX']];
-  dados.forEach(r => {
-    const dt = new Date(r.data+'T12:00:00').toLocaleDateString('pt-BR');
-    rowsAll.push([nomeArquivo(r),dt,r.forn,r.cat,r.valor,r.pgto,r.obs,PASTAS[r.pasta||'01']?.label,r.foto||'',r.xmlUrl||'',r.fotoPix||'']);
+  await new Promise(r=>setTimeout(r,50));
+  const rows=[['Arquivo','Data','Fornecedor','Categoria','Valor (R$)','Pagamento','Observação','Pasta','Link DANFE','Link XML','Link PIX']];
+  ordenados.forEach(r=>{
+    const dt=r.data?new Date(r.data+'T12:00:00').toLocaleDateString('pt-BR'):'';
+    rows.push([nomeArq(r),dt,r.forn,r.cat,r.valor,r.pgto,r.obs,PASTAS[r.pasta||'01']?.label,r.foto||'',r.xmlUrl||'',r.fotoPix||'']);
   });
-  const wsAll = XLSX.utils.aoa_to_sheet(rowsAll);
-  dados.forEach((r,i) => {
-    if(r.foto){const c=XLSX.utils.encode_cell({r:i+1,c:8});wsAll[c]={v:'Abrir DANFE',t:'s',l:{Target:r.foto}};}
-    if(r.xmlUrl){const c=XLSX.utils.encode_cell({r:i+1,c:9});wsAll[c]={v:'Abrir XML',t:'s',l:{Target:r.xmlUrl}};}
-    if(r.fotoPix){const c=XLSX.utils.encode_cell({r:i+1,c:10});wsAll[c]={v:'Abrir PIX',t:'s',l:{Target:r.fotoPix}};}
-  });
-  wsAll['!cols']=[{wch:32},{wch:12},{wch:28},{wch:20},{wch:12},{wch:12},{wch:20},{wch:30},{wch:16},{wch:16},{wch:16}];
-  XLSX.utils.book_append_sheet(wb,wsAll,'Todos os registros');
-  zip.file(`${base}/Resumo_${de}_${ate}.xlsx`, XLSX.write(wb,{bookType:'xlsx',type:'array'}));
-
-  pl.textContent='Compactando ZIP...'; pf.style.width='80%';
-  await new Promise(res => setTimeout(res,50));
-
-  const blob = await zip.generateAsync({type:'blob',compression:'DEFLATE',compressionOptions:{level:6}}, meta => {
-    pf.style.width = Math.round(80+meta.percent*0.18)+'%';
-  });
-  pf.style.width='100%'; pl.textContent='Pronto! Baixando...';
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
+  const ws=XLSX.utils.aoa_to_sheet(rows);
+  const wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,ws,'Compras');
+  zip.file(`${base}/Resumo_${de}_${ate}.xlsx`,XLSX.write(wb,{bookType:'xlsx',type:'array'}));
+  pl.textContent='Compactando...'; pf.style.width='80%';
+  await new Promise(r=>setTimeout(r,50));
+  const blob=await zip.generateAsync({type:'blob',compression:'DEFLATE',compressionOptions:{level:6}},m=>{pf.style.width=Math.round(80+m.percent*0.18)+'%';});
+  pf.style.width='100%'; pl.textContent='Pronto!';
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
   a.href=url; a.download=`CONTABILIDADE_${mn}-${MESES[m]}_${ano}.zip`;
   a.click(); URL.revokeObjectURL(url);
   setTimeout(()=>{pw.style.display='none';pf.style.width='0%';},3000);
-};
-
-const WORKER_URL = 'https://ocr-contabilidade.laislagomesds29.workers.dev';
-
-async function lerComIA() {
-  const img = getImg();
-  if (!img) { alert('Adicione uma foto primeiro.'); return; }
-
-  const btn = document.getElementById('btnIA');
-  const status = document.getElementById('iaStatus');
-  const statusTxt = document.getElementById('iaStatusTxt');
-
-  btn.disabled = true;
-  status.style.display = 'flex';
-  statusTxt.textContent = 'Analisando comprovante com IA...';
-
-  try {
-    const base64 = img.split(',')[1];
-    const response = await fetch(WORKER_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ base64, mimeType: 'image/jpeg' })
-    });
-
-    const data = await response.json();
-    if (data.error) throw new Error(data.error);
-    const texto = data.text || '';
-    
-    statusTxt.textContent = 'Preenchendo campos...';
-
-    // Extrair JSON da resposta — tolerante a texto extra
-    let resultado = null;
-    const jsonMatch = texto.match(/\{[\s\S]*?\}/);
-    if (jsonMatch) {
-      try { resultado = JSON.parse(jsonMatch[0]); } catch(e) {}
-    }
-    // Tentar JSON mais amplo se o primeiro falhar
-    if (!resultado) {
-      const jsonMatch2 = texto.match(/\{[\s\S]*\}/);
-      if (jsonMatch2) {
-        try { resultado = JSON.parse(jsonMatch2[0]); } catch(e) {}
-      }
-    }
-    if (!resultado) throw new Error('IA não retornou dados válidos. Tente novamente.');
-
-    // Preencher campos
-    if (resultado.data) document.getElementById('i-data').value = resultado.data;
-    if (resultado.fornecedor) document.getElementById('i-forn').value = resultado.fornecedor.toUpperCase();
-    if (resultado.valor) {
-      const valorNum = parseFloat(resultado.valor);
-      if (!isNaN(valorNum)) {
-        document.getElementById('i-valor').value = valorNum.toFixed(2).replace('.', ',');
-      }
-    }
-    if (resultado.categoria) {
-      const sel = document.getElementById('i-cat');
-      for (let opt of sel.options) {
-        if (opt.value === resultado.categoria) { sel.value = resultado.categoria; break; }
-      }
-    }
-
-    status.style.display = 'none';
-
-    // Mostrar confirmação visual
-    const cvs = document.getElementById('cvsWrap');
-    const msg = document.createElement('div');
-    msg.className = 'ia-sugestao';
-    msg.innerHTML = `<strong>✨ IA preencheu automaticamente</strong>
-      ${resultado.fornecedor ? '✅ Fornecedor: '+resultado.fornecedor+'<br>' : ''}
-      ${resultado.valor ? '✅ Valor: R$ '+resultado.valor+'<br>' : ''}
-      ${resultado.data ? '✅ Data: '+new Date(resultado.data+'T12:00:00').toLocaleDateString('pt-BR')+'<br>' : ''}
-      ${resultado.categoria ? '✅ Categoria: '+resultado.categoria : ''}
-      <br><span style="color:#888;font-size:11px">Confira os campos e ajuste se necessário</span>`;
-    // Remover msg anterior se existir
-    const msgAnterior = cvs.querySelector('.ia-sugestao');
-    if (msgAnterior) msgAnterior.remove();
-    cvs.appendChild(msg);
-
-  } catch(e) {
-    status.style.display = 'none';
-    alert('Erro na leitura: ' + e.message + '\nTente novamente ou preencha manualmente.');
-    console.error(e);
-  }
-
-  btn.disabled = false;
 }
 
-// ============================================================
-// IMPORTADOR OFX
-// ============================================================
-let ofxTransacoes = [];
-
-window.importarOFX = function(input) {
-  const file = input.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    try {
-      ofxTransacoes = parseOFX(e.target.result);
-      document.getElementById('ofxResumo').style.display = 'block';
-      renderOFX();
-    } catch(err) {
-      alert('Erro ao ler o arquivo OFX: ' + err.message);
-    }
-  };
-  reader.readAsText(file, 'latin1');
-};
-
-function parseOFX(texto) {
-  const transacoes = [];
-  // Extrair todas as transações STMTTRN
-  const regex = /<STMTTRN>([\s\S]*?)<\/STMTTRN>/gi;
-  let match;
-  while ((match = regex.exec(texto)) !== null) {
-    const bloco = match[1];
-    const tipo = (bloco.match(/<TRNTYPE>(.*)/i) || [])[1]?.trim() || '';
-    const dtpost = (bloco.match(/<DTPOSTED>(.*)/i) || [])[1]?.trim() || '';
-    const valor = parseFloat((bloco.match(/<TRNAMT>(.*)/i) || [])[1]?.trim() || '0');
-    const memo = (bloco.match(/<MEMO>(.*)/i) || [])[1]?.trim() || '';
-    const name = (bloco.match(/<NAME>(.*)/i) || [])[1]?.trim() || '';
-    const fitid = (bloco.match(/<FITID>(.*)/i) || [])[1]?.trim() || '';
-
-    // Formatar data YYYYMMDD para YYYY-MM-DD
-    let data = '';
-    if (dtpost.length >= 8) {
-      data = dtpost.slice(0,4) + '-' + dtpost.slice(4,6) + '-' + dtpost.slice(6,8);
-    }
-
-    transacoes.push({
-      tipo, data, valor,
-      desc: memo || name || tipo,
-      fitid,
-      entrada: valor > 0,
-      saida: valor < 0
-    });
-  }
-  return transacoes.sort((a,b) => (b.data||'').localeCompare(a.data||''));
-}
-
-window.renderOFX = function() {
-  const filtro = document.getElementById('ofxFiltro').value;
-  const lista = document.getElementById('ofxLista');
-
-  let filtrados = ofxTransacoes;
-  if (filtro === 'entrada') filtrados = ofxTransacoes.filter(t => t.entrada);
-  if (filtro === 'saida') filtrados = ofxTransacoes.filter(t => t.saida);
-  if (filtro === 'sempix') filtrados = ofxTransacoes.filter(t => t.saida && !temComprovante(t));
-
-  const entradas = ofxTransacoes.filter(t=>t.entrada).reduce((s,t)=>s+t.valor,0);
-  const saidas = Math.abs(ofxTransacoes.filter(t=>t.saida).reduce((s,t)=>s+t.valor,0));
-
-  document.getElementById('ofx-total').textContent = ofxTransacoes.length;
-  document.getElementById('ofx-entrada').textContent = 'R$'+entradas.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
-  document.getElementById('ofx-saida').textContent = 'R$'+saidas.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
-
-  if (!filtrados.length) {
-    lista.innerHTML = '<div class="empty"><i class="ti ti-check"></i>Nenhuma transação neste filtro.</div>';
-    return;
-  }
-
-  lista.innerHTML = filtrados.map(t => {
-    const vf = 'R$' + Math.abs(t.valor).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
-    const dt = t.data ? new Date(t.data+'T12:00:00').toLocaleDateString('pt-BR') : '';
-    const classe = t.entrada ? 'ofx-entrada' : 'ofx-saida';
-    const valClasse = t.entrada ? 'ofx-val-pos' : 'ofx-val-neg';
-    const sinal = t.entrada ? '+' : '-';
-    const comp = temComprovante(t);
-    const badge = t.saida ? (comp
-      ? `<span class="ofx-match">✅ Com nota</span>`
-      : `<span class="ofx-semcomp">⚠️ Sem nota</span>`) : '';
-    return `<div class="ofx-item ${classe}">
-      <div style="flex:1;min-width:0">
-        <div class="ofx-desc">${t.desc}${badge}</div>
-        <div class="ofx-meta">${dt}</div>
-      </div>
-      <div class="${valClasse}">${sinal}${vf}</div>
-    </div>`;
-  }).join('');
-};
-
-function temComprovante(transacao) {
-  // Verificar se existe registro no Firebase com valor e data próximos
-  const valorAbs = Math.abs(transacao.valor);
-  return registros.some(r => {
-    if (!r.data || !r.valor) return false;
-    const mesmaDia = r.data === transacao.data;
-    const mesmaData3dias = Math.abs(new Date(r.data+'T12:00:00') - new Date(transacao.data+'T12:00:00')) <= 3*24*60*60*1000;
-    const valorProximo = Math.abs((r.valor||0) - valorAbs) < 0.02;
-    return valorProximo && mesmaData3dias;
-  });
-}
-
-window.exportarOFXExcel = function() {
-  if (!ofxTransacoes.length) return;
-  const rows = [['Data','Descrição','Tipo','Valor (R$)','Entrada/Saída','Comprovante no app']];
-  ofxTransacoes.forEach(t => {
-    const dt = t.data ? new Date(t.data+'T12:00:00').toLocaleDateString('pt-BR') : '';
-    const comp = t.saida ? (temComprovante(t) ? 'Sim' : 'Não') : '-';
-    rows.push([dt, t.desc, t.tipo, Math.abs(t.valor), t.entrada?'Entrada':'Saída', comp]);
-  });
-  const ws = XLSX.utils.aoa_to_sheet(rows);
-  ws['!cols'] = [{wch:12},{wch:40},{wch:15},{wch:14},{wch:12},{wch:18}];
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, 'Extrato');
-  XLSX.writeFile(wb, 'Extrato_Stone.xlsx');
-};
-
-window.filtro=filtro; window.trocarTab=trocarTab; window.limpar=limpar;
-window.salvar=salvar; window.selecionarPasta=selecionarPasta; window.togglePix=togglePix;
-window.lerComIA=lerComIA; window.renderOFX=renderOFX;
+// Expor globais
+window.trocarTab=trocarTab;
+window.selecionarPasta=selecionarPasta;
+window.togglePix=togglePix;
+window.aplicarFiltro=aplicarFiltro;
+window.lerComIA=lerComIA;
+window.salvar=salvar;
+window.limpar=limpar;
+window.exportExcel=exportExcel;
+window.gerarZIP=gerarZIP;
+window.renderLista=renderLista;
 </script>
 </body>
 </html>
